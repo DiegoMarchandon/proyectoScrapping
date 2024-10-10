@@ -129,10 +129,9 @@ function SubirImagenSubmitted() {
 }
 
 /**
- * verifica que solamente se devuelvan números naturales.
- * Devuelve -1 si el número no se pudo convertir a natural.
+ * convierte decimales y/o floats a enteros y los retorna.
  * @param mixed
- * @return int| 
+ * @return int
  */
 function digitsOnly($number){
 
@@ -142,4 +141,131 @@ function digitsOnly($number){
     return intval(preg_replace('/\D/', '', strstr($number, ',', true) ?: $number));
 }
 
+/**
+ * extrae de la cadena de texto enviada por parámetro el procesador y lo retorna si lo encuentra. 
+ * el string por defecto "otro" en caso contrario.
+ * @param string
+ * @return string
+ */
+function extractProcessor($input){
+
+    // aguja
+    $needle = "otro";
+
+    // los de musimundo
+    $colProcesadores = 
+    ['AMD Ryzen 5 5500U','Intel Core i5 13420H',
+        'Intel N4020C',
+        'Intel Celeron',
+        'Intel Core i3 1215U',
+        'AMD Ryzen 7 5700U',
+        'Intel Core i3 N305',
+        'AMD Ryzen 7 6800H',
+        'Intel Core i7 1255U',
+        'Intel Pentium Silver N5030',
+        'Intel Celeron N4020',
+        'AMD Ryzen 5 7520U',
+        'Intel Core i5 1235U',
+        'Intel Core i7 12700H',
+        'Intel Core i7 M1 (Apple Chip)',
+        'Intel Celeron N5100',
+        'Intel Core i3 1025G1',
+        'AMD Ryzen 5 5560U',
+        'Intel Core i7 1165G7',
+        'Intel Core i5-12450H',
+        'Intel Core i7 11va Gen',
+        'AMD Ryzen 5 5500U',
+        'Intel Core i3 10ma Gen',
+        'Intel Core i5 10ma Gen',
+        'Intel Core i5 11va Gen',
+        'AMD Ryzen 5 5700U',
+        'Intel Core i7',
+    ];
+
+    // coleccion de procesadores en un solo string y en minúsculas.
+    $procesadoresString = strtoupper(implode(" ",$colProcesadores));
+    // convierto el input a mayúsculas
+    $upperInput = strtoupper($input);
+
+    if(str_contains($procesadoresString,$upperInput)){
+        $needle = $upperInput;
+    }
+
+    return $needle;
+}
+
+/**
+ * extrae de la cadena de texto enviada por parámetro la marca y la retorna.
+ * el string por defecto "otro" en caso contrario.
+ * @param string
+ * @return string
+ */
+function extractBrand($input){
+    
+    $needle = "otra";
+
+    // las de garbarino
+    $colMarcasGarbarino = [
+        'A4TECH', 'ACER', 'ASUS', 'DELL', 'HP', 'LENOVO', 'PCBOX', 'ENOVA'
+    ];
+
+    // las de fravega
+    $colMarcasFravega = [
+        'Acer','Aiwa','Amazfit' /* acer */,'Aorus','Apple','Asus','Bangho','BGH','Big Ninja' /* daewoo */,
+        'Daewoo','Dell','Drax','eNova','Exo','Gateway','Gfast','Gigabyte' /* Aorus (solo acá) */,'HP',
+        'Huawei','Lenovo','MSI','Nixvision','Noblex','NSX','Oasis','PCBox','Pixart',
+        'Positivo BGH' /* BGH */,'Samsung'
+    ];
+
+    // las de mercadolibre
+    $ColMarcasMercadolibre = [
+        'Acer', 'Alienware', 'Apple', 'Asus', 'Bangho', 'BGH', 'Chuwi', 'Compaq', 'Coradir', 'CX', 
+        'Daewoo', 'Dell', 'eMachines', 'EXO', 'Gateway', 'Gigabyte', 'Haier', 'HP', 'Huawei', 
+        'Hyundai', 'IBM', 'Ken Brown', 'Lenovo', 'LG', 'Macbook', 'Medion', 'Microsoft', 'MSI', 
+        'Noblex', 'Packard Bell', 'Philco', 'Positivo', 'Positivo BGH' /* BGH */, 'Razer', 'Samsung',
+        'Sony', 'Sony VAIO', 'TCL', 'Toshiba','VAIO','ViewSonic','X-View'
+    ];
+    
+    // las de musimundo
+    $colMarcasMusimundo = [
+        'ACER','ASUS','DAEWOO','E-NOVA','ENOVA','EXO','GFAST','HDC','HP','KANJI','LENOVO','NSX','PANACOM','SAMSUNG'
+    ];
+    
+    $colMarcas = array_merge($colMarcasGarbarino,$colMarcasFravega,$ColMarcasMercadolibre,$colMarcasMusimundo);
+    // coleccion de marcas en un solo string y en minúsculas.
+    $marcasString = strtoupper(implode(" ",$colMarcas));
+    // convierto el input a mayúsculas
+    $upperInput = strtoupper($input);
+
+    if(str_contains($marcasString,$upperInput)){
+        $needle = $upperInput; 
+    }
+    return $needle;
+}
+
+/**
+ * recibe un arreglo indexado con el nombre + el precio
+ * llama a las funciones de extracción / formateo y retorna un arreglo con los datos limpios y listos para insertar
+ * @param string
+ * @return array
+ */
+function dataFormatted($nombreNet,$precioNet, $URL){
+    $arrFormat = [];
+    $arrFormat['marca'] = extractBrand($nombreNet);
+    $arrFormat['procesador'] = extractProcessor($nombreNet);
+    $arrFormat['precio'] = digitsOnly($precioNet);
+    $arrFormat['fullname'] = $nombreNet;
+    if($URL == 'https://listado.mercadolibre.com.ar/notebook#D[A:notebook]'){
+        $arrFormat['sitio'] = 'Mercado Libre';
+    }else if ($URL == 'https://www.garbarino.com/celulares-notebooks-y-tecnologia/informatica/notebooks-y-pc/notebooks'){
+        $arrFormat['sitio'] = 'Garbarino';
+    }else if($URL == 'https://www.fravega.com/l/informatica/notebooks/'){
+        $arrFormat['sitio'] = 'Fravega';
+    }else if($URL == 'https://www.musimundo.com/informatica/notebook/c/98'){
+        $arrFormat['sitio'] = 'Musimundo';
+    }else{
+        $arrFormat['sitio'] = 'otro';
+    }
+    return $arrFormat;
+} 
 ?>

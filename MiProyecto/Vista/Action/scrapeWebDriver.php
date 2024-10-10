@@ -10,7 +10,7 @@ C:\Drivers\edgedriver_win64\msedgedriver.exe
 require '../../vendor/autoload.php';
 // echo __DIR__;
 require '../../Utils/funciones.php';
-
+require '../../Controlador/ABMNotebook.php';
 use Symfony\Component\Panther\Client;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
@@ -21,7 +21,7 @@ use Facebook\WebDriver\WebDriverWait;
 use Symfony\Component\Panther\PantherTestCase;
 
 // ruta al msgedgedriver con el puerto correcto
-$msedgedriverURL = 'http://localhost:56712';
+$msedgedriverURL = 'http://localhost:61134';
 
 // ruta al ejecutable de Microsoft Edge
 $edgeBinary = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe';
@@ -162,12 +162,13 @@ foreach($netsMusimundo as $notebook){
 /* cada clave ($URL) guarda como valor una coleccion de clases ($infoNets) relacionadas con las notebooks de su respectiva página */
 // creo una variable index para detectar en cuál elemento de mi arreglo asociativo estoy 
 $index = 0;
+
 foreach($ColURLs as $URL => $infoNets){
     $driver->get($URL);
     $index++;
     $colNets = $driver->findElements(WebDriverBy::cssSelector($infoNets['classNets']));
     foreach($colNets as $notebook){
-        echo "\n------------\n INDICE NUMERO: ".$index."\n------------\n";
+        // echo "\n------------\n INDICE NUMERO: ".$index."\n------------\n";
         // cuando llego a la página de musimundo (última en mi arreglo) siempre tengo problemas al momento de querer acceder a la clase con el nombre de las notebooks, (PHP Error: no such element... 'a[data-test-plp="item_name"]')
         // por eso probé utilizar las funciones de Espera de WebDriver. Para esperar la aparición del elemento en mi cssSelector 
         if($index == 4){
@@ -176,6 +177,7 @@ foreach($ColURLs as $URL => $infoNets){
 
             // este try-catch hace lo mismo que el que viene por defecto configurado en WebDriver, solo devuelve un mensaje en español. Pueden sacarlo si quieren
             try {
+                // $nombreNet = $driver->findElement(WebDriverBy::xpath("//*[self::h2 or self::h3 or self::p or self::a][contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'notebook')]"))->getText();
                 $nombreNet = $notebook->findElement(WebDriverBy::cssSelector($infoNets['nombreNet']))->getText();
             } catch (Exception $e) {
                 $nombreNet = "Nombre no disponible"; // Puedes asignar un valor por defecto si lo prefieres
@@ -185,13 +187,18 @@ foreach($ColURLs as $URL => $infoNets){
             $precioNet = $notebook->findElement(WebDriverBy::cssSelector($infoNets['precioNet']))->getText();
         }else{
             $nombreNet = $notebook->findElement(WebDriverBy::cssSelector($infoNets['nombreNet']))->getText();
+            // $nombreNet = $driver->findElement(WebDriverBy::xpath("//*[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'notebook')]"))->getText();
             $precioNet = $notebook->findElement(WebDriverBy::cssSelector($infoNets['precioNet']))->getText();
         }
         
-        echo "\n-------------INICIO--------------\n";    
-        echo "producto: ".$nombreNet."\n";
-        echo "precio: ".digitsOnly($precioNet)."\n";
-        echo "\n-------------FIN--------------\n";
+        // echo "\n-------------INICIO--------------\n";    
+        echo "\nproducto: ".$nombreNet."\n";
+        echo "\nprecio: ".digitsOnly($precioNet)."\n";
+        // echo "\n-------------FIN--------------\n";
+        // datos de una notebook convertida en arreglo asociativo
+        $netArrAssoc = dataFormatted($nombreNet,$precioNet,$URL);
+        
+
     }
 }
 

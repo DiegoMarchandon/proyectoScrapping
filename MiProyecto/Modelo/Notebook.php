@@ -5,7 +5,7 @@ class Notebook{
     private $fullname;
     private $marca;
     private $procesador;
-    private $url;
+    private $sitio;
     private $precio;
     private $mensajeoperacion;
 
@@ -14,7 +14,7 @@ class Notebook{
         $this->fullname='';
         $this->marca='';
         $this->procesador='';
-        $this->url = '';
+        $this->sitio = '';
         $this->mensajeoperacion='';
     }
 
@@ -31,8 +31,8 @@ class Notebook{
     public function getProcesador(){
         return $this->procesador;
     }
-    public function getUrl(){
-        return $this->url;
+    public function getSitio(){
+        return $this->sitio;
     }
     public function getPrecio(){
         return $this->precio;
@@ -54,8 +54,8 @@ class Notebook{
     public function setProcesador($newValue){
         $this->procesador = $newValue;
     }
-    public function setUrl($newValue){
-        $this->url = $newValue;
+    public function setSitio($newValue){
+        $this->sitio = $newValue;
     }
     public function setPrecio($newValue){
         $this->precio = $newValue;
@@ -64,12 +64,12 @@ class Notebook{
         $this->mensajeoperacion = $nuevoMensajeOperacion;
     }
 
-    public function setear($id, $fullname, $marca, $procesador, $url, $precio){
+    public function setear($id, $fullname, $marca, $procesador, $sitio, $precio){
         $this->setId($id);
         $this->setFullname($fullname);
         $this->setMarca($marca);
         $this->setProcesador($procesador);
-        $this->setUrl($url);
+        $this->setSitio($sitio);
         $this->setPrecio($precio);
     }
 
@@ -85,7 +85,7 @@ class Notebook{
                     // $objDuenio = new Persona();
                     // $objDuenio->setNroDni($row['DniDuenio']);
                     // $objDuenio->cargar();
-                    $this->setear($row['id'], $row['Fullname'], $row['Marca'],$row['Procesador'],$row['URL'], $row['Precio']);
+                    $this->setear($row['id'], $row['Fullname'], $row['Marca'],$row['Procesador'],$row['Sitio'], $row['Precio']);
                     
                 }
             }
@@ -112,7 +112,7 @@ class Notebook{
 				    $this->setFullname($row2['Fullname']);
 					$this->setMarca($row2['Marca']);
 					$this->setProcesador($row2['Procesador']);
-					$this->setUrl($row2['URL']);
+					$this->setSitio($row2['Sitio']);
                     $this->setPrecio($row2['Precio']);
 					$resp= true;
 				}				
@@ -131,7 +131,7 @@ class Notebook{
     public function insertar(){
         $resp = false;
         $base=new BaseDatos();
-        $sql="INSERT INTO notebook(Fullname, Marca, Procesador, URL, Precio)  VALUES('".$this->getFullname()."', '".$this->getMarca()."', '".$this->getProcesador()."', '".$this->getUrl()."',".$this->getPrecio().");";
+        $sql="INSERT INTO notebook(Fullname, Marca, Procesador, Sitio, Precio)  VALUES('".$this->getFullname()."', '".$this->getMarca()."', '".$this->getProcesador()."', '".$this->getSitio()."',".$this->getPrecio().");";
         if ($base->Iniciar()) {
             if ($base->Ejecutar($sql)) {
                 if($id = $base->lastInsertId($sql)){
@@ -152,7 +152,7 @@ class Notebook{
     public function modificar(){
         $resp = false;
         $base=new BaseDatos();
-        $sql="UPDATE notebook SET Marca ='".$this->getMarca()."', Fullname= '".$this->getFullname()."', Procesador = '".$this->getProcesador()."', URL = '".$this->getUrl()."', Precio = ".$this->getPrecio()." WHERE id= '".$this->getId()."'";
+        $sql="UPDATE notebook SET Marca ='".$this->getMarca()."', Fullname= '".$this->getFullname()."', Procesador = '".$this->getProcesador()."', Sitio = '".$this->getSitio()."', Precio = ".$this->getPrecio()." WHERE id= '".$this->getId()."'";
         if ($base->Iniciar()) {
             if ($base->Ejecutar($sql)) {
                 $resp = true;
@@ -195,7 +195,7 @@ class Notebook{
                 while ($row = $base->Registro()){
                     
                     $net = new Notebook();
-                    $net->setear($row['id'], $row['Fullname'], $row['Marca'], $row['Procesador'],$row['URL'],$row['Precio']);      
+                    $net->setear($row['id'], $row['Fullname'], $row['Marca'], $row['Procesador'],$row['Sitio'],$row['Precio']);      
                     array_push($arreglo, $net);
                 }
                
@@ -221,7 +221,7 @@ class Notebook{
         return "\nfullName: ".$this->getFullname().
         "\nMarca: " .$this->getMarca().
         "\nProcesador: ".$this->getProcesador().
-        "\nUrl: ".$this->getUrl().
+        "\nSitio: ".$this->getSitio().
         "\nPrecio: ".$this->getPrecio()."\n";
     }
 
