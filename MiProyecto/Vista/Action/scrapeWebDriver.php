@@ -8,10 +8,12 @@ C:\Drivers\edgedriver_win64\msedgedriver.exe
 
 // require __DIR__.'/vendor/autoload.php';
 require '../Composer/vendor/autoload.php';
+
 // echo __DIR__;
 require '../../Utils/funciones.php';
 // require '../../Controlador/ABMNotebook.php';
 
+use Controlador\ABMNotebook;
 use Symfony\Component\Panther\Client;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
@@ -128,8 +130,8 @@ foreach($netsGarbarino as $notebook){
     echo "\n-------------FIN--------------\n";
 
 } */
-
-/* foreach($netsMercadoLibre as $notebook){
+/* 
+foreach($netsMercadoLibre as $notebook){
     $precioActual = $notebook->findElement(WebDriverBy::cssSelector('div.poly-price__current .andes-money-amount__fraction'))->getText();
     $nombreProd = $notebook->findElement(WebDriverBy::cssSelector('.poly-box.poly-component__title'))->getText();
 
@@ -191,14 +193,20 @@ foreach($ColURLs as $URL => $infoNets){
             // $nombreNet = $driver->findElement(WebDriverBy::xpath("//*[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'notebook')]"))->getText();
             $precioNet = $notebook->findElement(WebDriverBy::cssSelector($infoNets['precioNet']))->getText();
         }
-        /* 
-        echo "\n-------------INICIO--------------\n";    
+        
+       /*  echo "\n-------------INICIO--------------\n";    
         echo "\nproducto: ".$nombreNet."\n";
         echo "\nprecio: ".digitsOnly($precioNet)."\n";
         echo "\n-------------FIN--------------\n"; */
+
         // datos de una notebook convertida en arreglo asociativo
         $netArrAssoc = dataFormatted($nombreNet,$precioNet,$URL);
-        $ABMNotebook = new ABMNotebook;
+
+        $ABMNotebook = new ABMNotebook; 
+
+        // antes de ingresar registros, limpio los anteriores
+        // $ABMNotebook->baja();
+
         if($ABMNotebook->alta($netArrAssoc)){
             echo "\nnotebook ingresada exitosamente en la BD\n ";
         }else{

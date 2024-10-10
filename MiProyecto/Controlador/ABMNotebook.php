@@ -2,6 +2,7 @@
 
 
 namespace Controlador;
+use Clase\Notebook;
 class ABMNotebook{
 
     /**

@@ -1,8 +1,8 @@
 <?php
 
 namespace Conector;
-// use PDO;
-class BaseDatos extends \PDO {
+use PDO;
+class BaseDatos extends PDO {
   
     private $engine;
     private $host;
@@ -91,7 +91,6 @@ class BaseDatos extends \PDO {
      */
     public function getSQL(){
         return "\n".$this->sql;
-        
     }
     
     public function Ejecutar($sql){

@@ -254,7 +254,7 @@ function dataFormatted($nombreNet,$precioNet, $URL){
     $arrFormat['Marca'] = extractBrand($nombreNet);
     $arrFormat['Procesador'] = extractProcessor($nombreNet);
     $arrFormat['Precio'] = digitsOnly($precioNet);
-    $arrFormat['Fullname'] = $nombreNet;
+    $arrFormat['Fullname'] = str_replace(['"',"'"],"", $nombreNet);
     if($URL == 'https://listado.mercadolibre.com.ar/notebook#D[A:notebook]'){
         $arrFormat['Sitio'] = 'Mercado Libre';
     }else if ($URL == 'https://www.garbarino.com/celulares-notebooks-y-tecnologia/informatica/notebooks-y-pc/notebooks'){
