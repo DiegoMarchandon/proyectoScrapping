@@ -7,10 +7,11 @@ C:\Drivers\edgedriver_win64\msedgedriver.exe
 */
 
 // require __DIR__.'/vendor/autoload.php';
-require '../../vendor/autoload.php';
+require '../Composer/vendor/autoload.php';
 // echo __DIR__;
 require '../../Utils/funciones.php';
-require '../../Controlador/ABMNotebook.php';
+// require '../../Controlador/ABMNotebook.php';
+
 use Symfony\Component\Panther\Client;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
@@ -21,7 +22,7 @@ use Facebook\WebDriver\WebDriverWait;
 use Symfony\Component\Panther\PantherTestCase;
 
 // ruta al msgedgedriver con el puerto correcto
-$msedgedriverURL = 'http://localhost:61134';
+$msedgedriverURL = 'http://localhost:62863';
 
 // ruta al ejecutable de Microsoft Edge
 $edgeBinary = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe';
@@ -168,7 +169,7 @@ foreach($ColURLs as $URL => $infoNets){
     $index++;
     $colNets = $driver->findElements(WebDriverBy::cssSelector($infoNets['classNets']));
     foreach($colNets as $notebook){
-        // echo "\n------------\n INDICE NUMERO: ".$index."\n------------\n";
+        echo "\n------------\n INDICE NUMERO: ".$index."\n------------\n";
         // cuando llego a la página de musimundo (última en mi arreglo) siempre tengo problemas al momento de querer acceder a la clase con el nombre de las notebooks, (PHP Error: no such element... 'a[data-test-plp="item_name"]')
         // por eso probé utilizar las funciones de Espera de WebDriver. Para esperar la aparición del elemento en mi cssSelector 
         if($index == 4){
@@ -190,14 +191,19 @@ foreach($ColURLs as $URL => $infoNets){
             // $nombreNet = $driver->findElement(WebDriverBy::xpath("//*[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'notebook')]"))->getText();
             $precioNet = $notebook->findElement(WebDriverBy::cssSelector($infoNets['precioNet']))->getText();
         }
-        
-        // echo "\n-------------INICIO--------------\n";    
+        /* 
+        echo "\n-------------INICIO--------------\n";    
         echo "\nproducto: ".$nombreNet."\n";
         echo "\nprecio: ".digitsOnly($precioNet)."\n";
-        // echo "\n-------------FIN--------------\n";
+        echo "\n-------------FIN--------------\n"; */
         // datos de una notebook convertida en arreglo asociativo
         $netArrAssoc = dataFormatted($nombreNet,$precioNet,$URL);
-        
+        $ABMNotebook = new ABMNotebook;
+        if($ABMNotebook->alta($netArrAssoc)){
+            echo "\nnotebook ingresada exitosamente en la BD\n ";
+        }else{
+            echo "\nNotebook no ingresada.\n";
+        }
 
     }
 }

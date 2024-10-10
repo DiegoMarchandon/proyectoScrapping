@@ -1,5 +1,8 @@
 <?php
 
+
+namespace Clase;
+use Conector\BaseDatos;
 class Notebook{
     private $id;
     private $fullname;

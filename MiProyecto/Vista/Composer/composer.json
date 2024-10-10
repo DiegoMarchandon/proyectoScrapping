@@ -6,7 +6,10 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "App\\":"src/"
+            "App\\":"src/",
+            "Conector\\":"../../Modelo/conector/",
+            "Clase\\":"../../Modelo/",
+            "Controlador\\":"../../Controlador/"
         }
     },
     "autoload-dev": {

@@ -251,20 +251,20 @@ function extractBrand($input){
  */
 function dataFormatted($nombreNet,$precioNet, $URL){
     $arrFormat = [];
-    $arrFormat['marca'] = extractBrand($nombreNet);
-    $arrFormat['procesador'] = extractProcessor($nombreNet);
-    $arrFormat['precio'] = digitsOnly($precioNet);
-    $arrFormat['fullname'] = $nombreNet;
+    $arrFormat['Marca'] = extractBrand($nombreNet);
+    $arrFormat['Procesador'] = extractProcessor($nombreNet);
+    $arrFormat['Precio'] = digitsOnly($precioNet);
+    $arrFormat['Fullname'] = $nombreNet;
     if($URL == 'https://listado.mercadolibre.com.ar/notebook#D[A:notebook]'){
-        $arrFormat['sitio'] = 'Mercado Libre';
+        $arrFormat['Sitio'] = 'Mercado Libre';
     }else if ($URL == 'https://www.garbarino.com/celulares-notebooks-y-tecnologia/informatica/notebooks-y-pc/notebooks'){
-        $arrFormat['sitio'] = 'Garbarino';
+        $arrFormat['Sitio'] = 'Garbarino';
     }else if($URL == 'https://www.fravega.com/l/informatica/notebooks/'){
-        $arrFormat['sitio'] = 'Fravega';
+        $arrFormat['Sitio'] = 'Fravega';
     }else if($URL == 'https://www.musimundo.com/informatica/notebook/c/98'){
-        $arrFormat['sitio'] = 'Musimundo';
+        $arrFormat['Sitio'] = 'Musimundo';
     }else{
-        $arrFormat['sitio'] = 'otro';
+        $arrFormat['Sitio'] = 'otro';
     }
     return $arrFormat;
 } 

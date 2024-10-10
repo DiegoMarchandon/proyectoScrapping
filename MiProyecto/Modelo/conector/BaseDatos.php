@@ -1,5 +1,8 @@
 <?php
-class BaseDatos extends PDO {
+
+namespace Conector;
+// use PDO;
+class BaseDatos extends \PDO {
   
     private $engine;
     private $host;

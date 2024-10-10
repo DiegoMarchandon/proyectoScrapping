@@ -1,5 +1,7 @@
 <?php
 
+
+namespace Controlador;
 class ABMNotebook{
 
     /**
@@ -54,9 +56,9 @@ class ABMNotebook{
     private function cargarObjeto($param){
         $obj = null;
 
-        if(array_key_exists('id',$param) && array_key_exists('Fullname',$param) && array_key_exists('Marca', $param) && array_key_exists('Procesador', $param) && array_key_exists('URL', $param) && array_key_exists('Precio', $param)){
+        if(array_key_exists('id',$param) && array_key_exists('Fullname',$param) && array_key_exists('Marca', $param) && array_key_exists('Procesador', $param) && array_key_exists('Sitio', $param) && array_key_exists('Precio', $param)){
             $obj = new Notebook();
-            $obj->setear($param['id'], $param['Fullname'], $param['Marca'], $param['Procesador'],$param['URL'],$param['Precio']);
+            $obj->setear($param['id'], $param['Fullname'], $param['Marca'], $param['Procesador'],$param['Sitio'],$param['Precio']);
         }
 
         return $obj;
@@ -97,7 +99,7 @@ class ABMNotebook{
      */
     public function alta($param){
         $resp = false;
-        // $param['patente'] =null;
+        $param['id'] =null;
         $objNet = $this->cargarObjeto($param);
 //        verEstructura($elObjtTabla);
         if ($objNet!=null and $objNet->insertar()){
@@ -152,7 +154,7 @@ class ABMNotebook{
             if (isset($param['Fullname'])) $where.=" and Fullname ='".$param['Fullname']."'";
             if (isset($param['Marca'])) $where.=" and Marca ='".$param['Marca']."'";
             if (isset($param['Procesador'])) $where.=" and Procesador ='".$param['Procesador']."'";
-            if (isset($param['URL'])) $where.=" and URL = '".$param['URL']."'";
+            if (isset($param['Sitio'])) $where.=" and Sitio = '".$param['Sitio']."'";
             if (isset($param['Precio'])) $where.=" and Precio =".$param['Precio']."";
 
         }
