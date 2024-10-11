@@ -1,10 +1,10 @@
-<?php 
+<?php
 require '../Composer/vendor/autoload.php';
 require '../../Utils/funciones.php';
 use Controlador\ABMNotebook;
 $ABMNotebook = new ABMNotebook;  
-$colNets = json_encode($ABMNotebook->buscarArray(null));
-echo $colNets;
+$colNets = $ABMNotebook->buscarArray(null);
+// echo "hola\n";
 // print_r($colNets);
 ?>
 

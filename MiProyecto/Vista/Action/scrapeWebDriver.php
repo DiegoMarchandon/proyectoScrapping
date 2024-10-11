@@ -1,4 +1,7 @@
 <?php
+// inicio una sesión para almacenar los datos del prograso del scraping en una variable superglobal
+session_start();
+
 /* PASOS PARA CONECTARME CON MICROSOFT EDGE:
 1) ejecutar el driver de edge en CMD:
 C:\Drivers\edgedriver_win64\msedgedriver.exe
@@ -6,12 +9,8 @@ C:\Drivers\edgedriver_win64\msedgedriver.exe
 3) ejecutar el script con el webDriver.
 */
 
-// require __DIR__.'/vendor/autoload.php';
 require '../Composer/vendor/autoload.php';
-
-// echo __DIR__;
 require '../../Utils/funciones.php';
-// require '../../Controlador/ABMNotebook.php';
 
 use Controlador\ABMNotebook;
 use Symfony\Component\Panther\Client;
@@ -24,7 +23,7 @@ use Facebook\WebDriver\WebDriverWait;
 use Symfony\Component\Panther\PantherTestCase;
 
 // ruta al msgedgedriver con el puerto correcto
-$msedgedriverURL = 'http://localhost:62863';
+$msedgedriverURL = 'http://localhost:58437';
 
 // ruta al ejecutable de Microsoft Edge
 $edgeBinary = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe';
@@ -43,36 +42,6 @@ $capabilities->setCapability('ms:edgeOptions',[
 $driver = RemoteWebDriver::create($msedgedriverURL,$capabilities);
 
 // realiza la solicitud
-
-// $driver->get('https://www.culturagenial.com/es/libros-para-leer/');
-
-// inicia un cliente de Panther (usará un navegador en segundo plano);
-/* 
-$client = Client::createChromeClient($msedgedriver,
-[
-    '--headless', // Opcional, para que se ejecute en segundo plano
-    '--disable-gpu',
-    '--no-sa
-
-// Realiza la solicitud
-// $crawler = $client->request('GET', 'https://www.culturagenial.com/es/libros-para-leer/');
-
-// Selecciona los títulos de los artículos
-/* $titles = $crawler->filter('h2.article-title')->each(function ($node) {
-    return $node->text();
-}); */
-
-/* para filtrar los títulos de los libros 
-$booksContainer= $driver->findElement(WebDriverBy::id('js-news-body'));
-
-$titles = $booksContainer->findElements(WebDriverBy::cssSelector('h2'));
-
-// Muestra los títulos
-
-foreach ($titles as $title) {
-    echo $title->getText()."\n";
-}
-*/
 
 // URL de las distintas paginas a consultar
 // la key es la URL y el value es un elemento que hace referencia a una net de la página 
@@ -165,16 +134,27 @@ foreach($netsMusimundo as $notebook){
 $ABMNotebook = new ABMNotebook; 
 $ABMNotebook->deleteRegis();
 
+$cantURLs = count($ColURLs); #total de páginas a recorrer
+
 /* cada clave ($URL) guarda como valor una coleccion de clases ($infoNets) relacionadas con las notebooks de su respectiva página */
 // creo una variable index para detectar en cuál elemento de mi arreglo asociativo estoy 
 $index = 0;
+// variables para inicializar el progreso del scrapping
+$porcentajeTotal = $index;
+$_SESSION['progreso_scrapping'] = $porcentajeTotal;
 
 foreach($ColURLs as $URL => $infoNets){
     $driver->get($URL);
     $index++;
+
+    // actualizo el progreso: 
+    $_SESSION['progreso_scrapping'] = ($index / $cantURLs) * 100;
+
     $colNets = $driver->findElements(WebDriverBy::cssSelector($infoNets['classNets']));
+
     foreach($colNets as $notebook){
         echo "\n------------\n INDICE NUMERO: ".$index."\n------------\n";
+
         // cuando llego a la página de musimundo (última en mi arreglo) siempre tengo problemas al momento de querer acceder a la clase con el nombre de las notebooks, (PHP Error: no such element... 'a[data-test-plp="item_name"]')
         // por eso probé utilizar las funciones de Espera de WebDriver. Para esperar la aparición del elemento en mi cssSelector 
         if($index == 4){
@@ -205,11 +185,6 @@ foreach($ColURLs as $URL => $infoNets){
         // datos de una notebook convertida en arreglo asociativo
         $netArrAssoc = dataFormatted($nombreNet,$precioNet,$URL);
 
-        
-
-        // antes de ingresar registros, limpio los anteriores
-        // $ABMNotebook->refresh();
-
         if($ABMNotebook->alta($netArrAssoc)){
             echo "\nnotebook ingresada exitosamente en la BD\n ";
         }else{
@@ -218,6 +193,9 @@ foreach($ColURLs as $URL => $infoNets){
 
     }
 }
+
+// proceso completo
+$_SESSION['progreso_scrapping'] = 100;
 
 // Cierra el WebDriver
 $driver->quit();

@@ -1,6 +1,6 @@
 body {
     background-color: #000;
-    height: 100vh;
+    /* height: 100vh; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -75,4 +75,30 @@ body {
 .logoClass{
     width: 100px;
     height: 100px;
+}
+
+#barraNav{
+    width: 100%;
+    height: 70px;
+    background-color: #00ffff;
+}
+
+/* estilos de la barra de progreso */
+#progressTitle{
+    color: #04b8b8;
+}
+
+.progress-container {
+    width: 50%;
+    background-color: #a1a7a7;
+    border-radius: 30px;
+}
+
+.progress-bar {
+    width: 0%;
+    height: 30px;
+    background-color: #00ffff;
+    text-align: center;
+    color: white;
+    font-weight: bold;
 }
