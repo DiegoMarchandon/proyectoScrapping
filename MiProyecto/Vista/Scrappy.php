@@ -29,7 +29,9 @@
             <div class="mb-3">
                 <label for="especificaciones" class="form-label text-light">ingrese las especificaciones deseadas</label>
                 <input type="text" class="form-control neon-input" id="busquedaInput" placeholder="Ej: marca, modelo, procesador...">
-                <div id="suggestions"></div> <!-- donde se mostrarán las sugerencias -->
+                <div id="suggestions">
+                    
+                </div> <!-- donde se mostrarán las sugerencias -->
             </div>
             
             <button type="submit" class="btn neon-btn w-100">Buscar</button>

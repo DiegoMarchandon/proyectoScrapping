@@ -162,6 +162,9 @@ foreach($netsMusimundo as $notebook){
     echo "\n-------------FIN--------------\n";
 } */
 
+$ABMNotebook = new ABMNotebook; 
+$ABMNotebook->deleteRegis();
+
 /* cada clave ($URL) guarda como valor una coleccion de clases ($infoNets) relacionadas con las notebooks de su respectiva página */
 // creo una variable index para detectar en cuál elemento de mi arreglo asociativo estoy 
 $index = 0;
@@ -194,15 +197,15 @@ foreach($ColURLs as $URL => $infoNets){
             $precioNet = $notebook->findElement(WebDriverBy::cssSelector($infoNets['precioNet']))->getText();
         }
         
-       /*  echo "\n-------------INICIO--------------\n";    
-        echo "\nproducto: ".$nombreNet."\n";
-        echo "\nprecio: ".digitsOnly($precioNet)."\n";
-        echo "\n-------------FIN--------------\n"; */
+        // echo "\n-------------INICIO--------------\n";    
+        // echo "\nproducto: ".$nombreNet."\n";
+        // echo "\nprecio: ".digitsOnly($precioNet)."\n";
+        // echo "\n-------------FIN--------------\n";
 
         // datos de una notebook convertida en arreglo asociativo
         $netArrAssoc = dataFormatted($nombreNet,$precioNet,$URL);
 
-        $ABMNotebook = new ABMNotebook; 
+        
 
         // antes de ingresar registros, limpio los anteriores
         // $ABMNotebook->refresh();

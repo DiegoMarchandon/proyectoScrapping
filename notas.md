@@ -19,3 +19,13 @@ $driver->get('https://www.musimundo.com/informatica/notebook/c/98');
 Estás utilizando el objeto $driver para navegar a la URL especificada. El método get() le indica al navegador que cargue la página web en la dirección proporcionada, lo que inicia la interacción con esa página para extraer o manipular su contenido.
 
 # El tipo de dato de $driver es un objeto de la clase RemoteWebDriver.
+
+# Notas sobre la estructura MVC 
+## Clase BaseDeDatos:
+ tiene las funciones relacionadas directamente con la conexión y ejecución de consultas en la base de datos (como insertar, actualizar, eliminar, etc.). Esta clase no debe conocer los detalles del modelo de negocio (por ejemplo, que estás manejando notebooks).
+
+## Clase Notebook: 
+ Esta es la representación del modelo de datos (una notebook). Contiene los atributos y métodos que describen a una notebook, pero no maneja la lógica de actualización.
+
+## Clase ABMNotebook (Alta, Baja, Modificación): 
+ se colocan las funciones que interactúan con la clase BaseDeDatos para actualizar los registros de notebooks en la base de datos. Esta clase se encarga de coordinar el trabajo entre el modelo Notebook y la base de datos, y es donde aplicarás las reglas de negocio. Acá es donde mejor quedaría la función 'Actualizar'.

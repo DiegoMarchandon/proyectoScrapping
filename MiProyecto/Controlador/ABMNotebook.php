@@ -3,6 +3,8 @@
 
 namespace Controlador;
 use Clase\Notebook;
+use Conector\BaseDatos;
+
 class ABMNotebook{
 
     /**
@@ -180,6 +182,20 @@ class ABMNotebook{
             $arreglo = convert_array($this->buscar($param));
         }
         return $arreglo;
+    }
+
+    /**
+     * Actualiza la base de datos, eliminando los datos anteriores y agregando nuevos.
+     * 
+     * @return void
+     */
+    public function deleteRegis(){
+        $BD = new BaseDatos;
+        if($BD->Ejecutar("DELETE FROM notebook;") > 0){
+            echo "se eliminaron los datos.";
+        }else{
+            echo "no se pudieron eliminar los datos.";
+        }
     }
 
 }
