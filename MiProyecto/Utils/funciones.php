@@ -152,8 +152,43 @@ function extractProcessor($input){
     // aguja
     $needle = "otro";
 
+    $colProcesadoresMercadoLibre = 
+    [
+        'A10','A12-Series','A4','A4-Series','A6','A6-Series','A8','A8-Series','A9',
+        'A9-Series','Amd','Amd ryzen 5','AMD Ryzen 3','Apollo','Apple','Apple M2 Max','Apple M2 Pro','Athlon',
+        'Athlon Gold','Athlon II','Athlon Silver','Athlon X2','Atom','C-Series','Celeron','Celeron Dual Core',
+        'Centrino','Core','Core 2 Duo','Core Duo','Core i3','Core i4','Core i5','Core i6','Core i7','Core i9',
+        'Core M','Core M3','E1','Exynos','i3','I5','i7','i7 11va','i7-1360P','I9','Inspiron','Intel','Intel Core',
+        'Intel Core i5', 'Intel Core i7','Ios','M1','M2','M2 Pro','Mobile','Pentium','Pentium 4','Pentium Silver',
+        'Pro','R7','Radeon','Ryzen','Ryzen 3','Ryzen 5','Ryzen 5 PRO','Ryzen 7','Ryzen 7 PRO','Ryzen 9','Snapdragon',
+        'Turion','Turion 64 X2','Vision','Xeon'
+    ];
+
+    $colProcesadoresFravega = 
+    [
+        'Intel Core i5', 
+        'AMD Ryzen 5', 
+        'Intel Core i7',
+        'Intel Core i3', 
+        'AMD Ryzen 7', 
+        'Apple M2',
+        'Intel Celeron', 
+        'AMD Ryzen 3', 
+        'AMD', 
+        'Intel Core Ultra 7', 
+        'Apple M1', 
+        'Apple M2 Pro', 
+        'Intel Core Ultra 5', 
+        'AMD Athlon', 
+        'AMD Ryzen 9', 
+        'CHIP M2', 
+        'Intel Core Ultra 9', 
+        'Intel Core i9', 
+        'Intel Pentium'
+    ];
+
     // los de musimundo
-    $colProcesadores = 
+    $colProcesadoresMusimundo = 
     ['AMD Ryzen 5 5500U','Intel Core i5 13420H',
         'Intel N4020C',
         'Intel Celeron',
@@ -179,17 +214,24 @@ function extractProcessor($input){
         'Intel Core i5 10ma Gen',
         'Intel Core i5 11va Gen',
         'AMD Ryzen 5 5700U',
-        'Intel Core i7',
+        'Intel Core i7'
     ];
 
-    // coleccion de procesadores en un solo string y en minúsculas.
-    $procesadoresString = strtoupper(implode(" ",$colProcesadores));
+    $colProcesadores = array_merge($colProcesadoresFravega,$colProcesadoresMusimundo,$colProcesadoresMercadoLibre);    
+    // coleccion de procesadores en un solo string y en mayúsculas.
+    // $procesadoresString = strtoupper(implode(" ",$colProcesadores));
     // convierto el input a mayúsculas
     $upperInput = strtoupper($input);
 
-    if(str_contains($procesadoresString,$upperInput)){
-        $needle = $upperInput;
-    }
+    $bandera = false;
+    $i = 0;
+    do{
+        if(str_contains($upperInput, strtoupper($colProcesadores[$i]))){
+            $bandera = true;
+            $needle = strtoupper($colProcesadores[$i]);
+        }
+        $i++;
+    }while(!$bandera && $i < count($colProcesadores));
 
     return $needle;
 }
@@ -231,15 +273,27 @@ function extractBrand($input){
         'ACER','ASUS','DAEWOO','E-NOVA','ENOVA','EXO','GFAST','HDC','HP','KANJI','LENOVO','NSX','PANACOM','SAMSUNG'
     ];
     
+    // coleccion de marcas unidas y en mayúsculas.
     $colMarcas = array_merge($colMarcasGarbarino,$colMarcasFravega,$ColMarcasMercadolibre,$colMarcasMusimundo);
-    // coleccion de marcas en un solo string y en minúsculas.
-    $marcasString = strtoupper(implode(" ",$colMarcas));
+    // $marcasString = strtoupper(implode(" ",$colMarcas));
+
     // convierto el input a mayúsculas
     $upperInput = strtoupper($input);
+    
+    $bandera = false;
+    $i = 0;
+    do{
+        if(str_contains($upperInput, strtoupper($colMarcas[$i]))){
+            $bandera = true;
+            $needle = strtoupper($colMarcas[$i]);
+        }
+        $i++;
+    }while(!$bandera && $i < count($colMarcas));
+    
 
-    if(str_contains($marcasString,$upperInput)){
+    /* if(str_contains($marcasString,$upperInput)){
         $needle = $upperInput; 
-    }
+    } */
     return $needle;
 }
 

@@ -205,7 +205,7 @@ foreach($ColURLs as $URL => $infoNets){
         $ABMNotebook = new ABMNotebook; 
 
         // antes de ingresar registros, limpio los anteriores
-        // $ABMNotebook->baja();
+        // $ABMNotebook->refresh();
 
         if($ABMNotebook->alta($netArrAssoc)){
             echo "\nnotebook ingresada exitosamente en la BD\n ";
