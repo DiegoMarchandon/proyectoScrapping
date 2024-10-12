@@ -71,7 +71,11 @@ $ColURLs = [
 ];
 
 $ABMNotebook = new ABMNotebook; 
-$ABMNotebook->deleteRegis();
+if($ABMNotebook->deleteRegis() > 0){
+    echo "<h1>Se eliminaron los datos correctamente</h1>";
+}else{
+    echo "<h1>No se eliminaron los datos.</h1>";
+}
 
 $cantURLs = count($ColURLs); #total de páginas a recorrer
 

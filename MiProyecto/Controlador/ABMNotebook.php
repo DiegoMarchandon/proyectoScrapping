@@ -186,16 +186,13 @@ class ABMNotebook{
 
     /**
      * Actualiza la base de datos, eliminando los datos anteriores y agregando nuevos.
-     * 
+     * Retorna un numero mayor a 0 si se pudo. -1 caso contrario.
      * @return void
      */
     public function deleteRegis(){
         $BD = new BaseDatos;
-        if($BD->Ejecutar("DELETE FROM notebook;") > 0){
-            echo "se eliminaron los datos.";
-        }else{
-            echo "no se pudieron eliminar los datos.";
-        }
+        $respuesta = $BD->Ejecutar("DELETE FROM notebook;");
+        return $respuesta;
     }
 
 }

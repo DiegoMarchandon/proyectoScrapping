@@ -48,9 +48,9 @@
             <div class="mb-3">
                 <label for="especificaciones" class="form-label text-light">ingrese las especificaciones deseadas</label>
                 <input type="text" class="form-control neon-input" id="busquedaInput" placeholder="Ej: marca, modelo, procesador...">
-                <div id="suggestions">
+                <ul id="suggestions">
                     
-                </div> <!-- donde se mostrarán las sugerencias -->
+                </ul> <!-- donde se mostrarán las sugerencias -->
             </div>
             
             <button type="submit" class="btn neon-btn w-100">Buscar</button>
@@ -124,18 +124,42 @@
             $('#busquedaInput').on('input', function() {
 
                 const inputValue = $(this).val();
+                // $(this) = elemento que disparó el evento (input con el id)
+                // .val() = valor actual dle campo de texto.
+
                 /* imprimo el valor del input: */
                 // console.log(inputValue);
 
-                if (inputValue.length > 0) {
+                if (inputValue.length > 2) {
+                    // método AJAX de jquery que realiza una solicitud asíncrona a un servidor. 
+                        // acá se utiliza para enviar una solicitud al servidor en busca de sugerencias basadas en lo que el usuario escribió. 
                     $.ajax({
-                        url: 'Action/getProgress.php', // Ruta al script en Action
+                        // ruta que procesará la solicitud del servidor.
+                        url: 'Action/sugerencias.php', // Ruta al script en Action
+                        // tipo de solicitud HTTP. GET implicará que los datos se enviarán en la URL
                         method: 'GET',
-                        dataType: 'json',
-                        data: { search: inputValue },
+                        // tipo de datos que se espera recibir de la respuesta. Obj o Array de formato JSON
+                        // dataType: 'json',
+                        // datos que se envían al servidor. Se trata de un objeto que contiene la cadena ingresada por el usuario.  
+                        // data: { search: inputValue },
                         success: function(data) {
+                            
+                            var notebooks = JSON.parse(data);
+                            var sugerenciasFilter = notebooks.filter(function(notebook){
+                                return notebook.fullname.toLowerCase().includes(inputValue.toLowerCase());
+                            });
+
+                            // Limpiar sugerencias anteriores
+                            $('#suggestions').empty();
+
+                            $('#suggestions').css('height','200px')
+                            // Mostrar nuevas sugerencias
+                            sugerenciasFilter.forEach(function(sugerencia) {
+                                $('#suggestions').append('<li style="color:#01c1c1">' + sugerencia.fullname + '</li>');
+                            });
+
                             // Aquí deberías procesar y mostrar las sugerencias
-                            $('#suggestions').html(data);
+                            // $('#suggestions').html(data);
                         }
                     });
                 } else {

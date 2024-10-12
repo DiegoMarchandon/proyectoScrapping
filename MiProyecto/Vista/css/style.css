@@ -83,6 +83,37 @@ body {
     background-color: #00ffff;
 }
 
+/* estilos de las sugerencias */
+
+
+#suggestions{
+    height: 0px;
+    overflow: auto;
+    background-color: #404040;
+}
+#suggestions::-webkit-scrollbar {
+    width: 12px; 
+    height: 12px; 
+}
+
+#suggestions::-webkit-scrollbar-thumb {
+    background-color: #00f7ff; 
+    border-radius: 6px; 
+}
+
+#suggestions::-webkit-scrollbar-track {
+    background: #00988b; 
+    border-radius: 6px; 
+}
+
+#suggestions::-webkit-scrollbar-thumb:hover {
+    background-color: #00908b; 
+}
+
+#suggestions::-webkit-scrollbar-track:hover {
+    background: #06696d; 
+}
+
 /* estilos de la barra de progreso */
 #progressTitle{
     color: #04b8b8;
