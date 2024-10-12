@@ -36,7 +36,9 @@
 </nav>
     <h3 id="progressTitle">Scrapping en progreso</h3>
     <div class="progress-container">
-        <div id="progressBar" class="progress-bar">0%</div>
+        <div id="progressBar" class="progress-bar">
+        <p id="progressText"> 0%</p>   
+        </div>
     </div>
 
     <div id="titleContainer">
@@ -85,20 +87,40 @@
     <!-- Bootstrap JS -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> -->
     <script>
-        fetch('Action/sugerencias.php')
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log(data);
-    })
-    .catch(error => {
-        console.error('There has been a problem with your fetch operation:', error);
-    });
-        function checkProgress() {
+    
+    function checkProgress() {
+    fetch('Action/getProgress.php')
+        .then(response => response.json())
+        .then(data => {
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = data.progress + '%';
+            progressBar.innerText = Math.round(data.progress) + '%';
+            
+            // Si el progreso es 100, detener el chequeo
+            if (data.progress < 100) {
+                setTimeout(checkProgress, 2000); // Chequear cada 2 segundos
+            } else {
+                // Redirigir o mostrar mensaje final
+                window.location.href = '../Scrappy.php';
+            }
+        })
+        .catch(error => console.error('Error fetching progress:', error));
+}
+
+
+    /* function checkProgress() {
+        $.get('Action/getProgress.php', function(data) {
+            const progress = data.progress;
+            $('#progressBar').css('width', progress + '%');
+            $('#progressText').text('Progreso: ' + progress.toFixed(2) + '%');
+
+            if (progress < 100) {
+                setTimeout(checkProgress, 1000); // Repetir cada segundo
+            }
+        });
+    } */
+
+    /* function checkProgress() {
             $.ajax({
                 url: 'Action/getProgress.php', // Llama al script que devuelve el progreso
                 method: 'GET',
@@ -117,7 +139,22 @@
                     console.error('Error obteniendo el progreso');
                 }
             });
+        } */
+    
+        fetch('Action/sugerencias.php')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => {
+        console.error('There has been a problem with your fetch operation:', error);
+    });
+        
         $(document).ready(function() {
             checkProgress();
             
@@ -152,7 +189,7 @@
                             // Limpiar sugerencias anteriores
                             $('#suggestions').empty();
 
-                            $('#suggestions').css('height','200px')
+                            $('#suggestions').css('height','200px');
                             // Mostrar nuevas sugerencias
                             sugerenciasFilter.forEach(function(sugerencia) {
                                 $('#suggestions').append('<li style="color:#01c1c1">' + sugerencia.fullname + '</li>');
@@ -163,6 +200,7 @@
                         }
                     });
                 } else {
+                    $('#suggestions').css('height','0px');
                     $('#suggestions').empty(); // Limpiar sugerencias si no hay entrada
                 }
             });

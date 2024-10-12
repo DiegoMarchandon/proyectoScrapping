@@ -82,17 +82,16 @@ $cantURLs = count($ColURLs); #total de páginas a recorrer
 /* cada clave ($URL) guarda como valor una coleccion de clases ($infoNets) relacionadas con las notebooks de su respectiva página */
 // creo una variable index para detectar en cuál elemento de mi arreglo asociativo estoy 
 $index = 0;
-// variables para inicializar el progreso del scrapping
-$porcentajeTotal = $index;
-$_SESSION['progreso_scrapping'] = $porcentajeTotal;
+// inicializo el porcentaje de scrapping
+$_SESSION['progreso_scrapping'] = 0;
 
 foreach($ColURLs as $URL => $infoNets){
     $driver->get($URL);
     $index++;
-
+    usleep(500000);
     // actualizo el progreso: 
     $_SESSION['progreso_scrapping'] = ($index / $cantURLs) * 100;
-
+    session_write_close(); // Cerrar la sesión para asegurar que se guarde el progreso
     $colNets = $driver->findElements(WebDriverBy::cssSelector($infoNets['classNets']));
 
     foreach($colNets as $notebook){
@@ -131,5 +130,7 @@ foreach($ColURLs as $URL => $infoNets){
 $_SESSION['progreso_scrapping'] = 100;
 
 // Cierra el WebDriver
+sleep(1);
+header('Location: ../Scrappy.php');
 $driver->quit();
 ?>

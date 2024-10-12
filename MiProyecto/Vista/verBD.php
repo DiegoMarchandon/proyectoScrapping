@@ -28,7 +28,7 @@ $colNets = $ABMNotebook->buscarArray(null);
   <a class="navbar-brand" href="#">Grupo 1 PWD</a>
   <a class="btn btn-dark active" aria-current="page" href="Scrappy.php">Inicio</a>
   <a class="btn btn-dark" href="">ver Base de Datos</a>
-  <a class="btn btn-dark" href="Actualizar Base de Datos">opcion3</a>
+  <a class="btn btn-dark" href="Action/autoScrapping.php">Actualizar Base de Datos</a>
   <a class="btn btn-dark" href="#">opcion4</a>
       
       <span class="navbar-text">
