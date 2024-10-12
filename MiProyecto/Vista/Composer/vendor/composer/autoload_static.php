@@ -15,6 +15,7 @@ class ComposerStaticInit621d12a63731d752e568a563cf31390e
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         '2a3c2110e8e0295330dc3d11a4cbc4cb' => __DIR__ . '/..' . '/php-webdriver/webdriver/lib/Exception/TimeoutException.php',
         'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
+        '307016689c90c16ec75ca988d6cdae5b' => __DIR__ . '/../..' . '/../../Utils/funciones.php',
     );
 
     public static $prefixLengthsPsr4 = array (

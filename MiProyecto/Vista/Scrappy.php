@@ -3,7 +3,7 @@
 // include_once('estructura/header.php');
 // require 'Composer/vendor/autoload.php';
 // require '../Utils/funciones.php';
-require 'Action/autoScrapping.php';
+// require 'Action/autoScrapping.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,10 +23,10 @@ require 'Action/autoScrapping.php';
 <body>
 <nav id="barraNav" class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
   
-    <a class="navbar-brand" href="#">Navbar w/ text</a>
+    <a class="navbar-brand" href="#">Grupo 1 PWD</a>
     <a class="btn btn-dark active" aria-current="page" href="#">Inicio</a>
-    <a class="btn btn-dark" href="#">ver Base de Datos</a>
-    <a class="btn btn-dark" href="#">opcion3</a>
+    <a class="btn btn-dark" href="verBD.php">ver Base de Datos</a>
+    <a class="btn btn-dark" href="Action/autoScrapping.php">Actualizar Base de Datos</a>
     <a class="btn btn-dark" href="#">opcion4</a>
         
         <span class="navbar-text">

@@ -92,6 +92,7 @@ body {
     width: 50%;
     background-color: #a1a7a7;
     border-radius: 30px;
+    overflow: hidden;
 }
 
 .progress-bar {
@@ -101,4 +102,19 @@ body {
     text-align: center;
     color: white;
     font-weight: bold;
+}
+
+/* estilos para la tabla de verBD */
+#tablaBD th{
+    background-color: #058787;
+}
+
+#tablaBD th, #tablaBD td{
+    border-color: #00ffff;
+}
+#tablaBD tr{
+    border-color: rgb(92, 148, 161)
+}
+#tablaBD tbody tr:hover{
+    background-color: #00ffff;
 }

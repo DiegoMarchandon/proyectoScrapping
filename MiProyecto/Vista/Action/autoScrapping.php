@@ -5,8 +5,9 @@
 // inicio una sesión para almacenar los datos del prograso del scraping en una variable superglobal
 session_start();
 
-require 'Composer/vendor/autoload.php';
-require '../Utils/funciones.php';
+// require 'Composer/vendor/autoload.php';
+require '../Composer/vendor/autoload.php';
+// require '../Utils/funciones.php';
 
 
 use Controlador\ABMNotebook;
@@ -91,7 +92,6 @@ foreach($ColURLs as $URL => $infoNets){
     $colNets = $driver->findElements(WebDriverBy::cssSelector($infoNets['classNets']));
 
     foreach($colNets as $notebook){
-        // echo "\n------------\n INDICE NUMERO: ".$index."\n------------\n";
 
         // cuando llego a la página de musimundo (última en mi arreglo) siempre tengo problemas al momento de querer acceder a la clase con el nombre de las notebooks, (PHP Error: no such element... 'a[data-test-plp="item_name"]')
         // por eso probé utilizar las funciones de Espera de WebDriver. Para esperar la aparición del elemento en mi cssSelector 
@@ -114,12 +114,6 @@ foreach($ColURLs as $URL => $infoNets){
             // $nombreNet = $driver->findElement(WebDriverBy::xpath("//*[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'notebook')]"))->getText();
             $precioNet = $notebook->findElement(WebDriverBy::cssSelector($infoNets['precioNet']))->getText();
         }
-        
-        // echo "\n-------------INICIO--------------\n";    
-        // echo "\nproducto: ".$nombreNet."\n";
-        // echo "\nprecio: ".digitsOnly($precioNet)."\n";
-        // echo "\n-------------FIN--------------\n";
-
         // datos de una notebook convertida en arreglo asociativo
         $netArrAssoc = dataFormatted($nombreNet,$precioNet,$URL);
 
