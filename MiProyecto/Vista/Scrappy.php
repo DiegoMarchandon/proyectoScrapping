@@ -26,7 +26,8 @@
     <a class="navbar-brand" href="#">Grupo 1 PWD</a>
     <a class="btn btn-dark active" aria-current="page" href="#">Inicio</a>
     <a class="btn btn-dark" href="verBD.php">ver Base de Datos</a>
-    <a class="btn btn-dark" href="Action/autoScrapping.php">Actualizar Base de Datos</a>
+    <button class="btn btn-dark" id="BTNautoScrapping">Actualizar Base de Datos</button>
+    <!-- <a class="btn btn-dark" href="Action/autoScrapping.php">Actualizar Base de Datos</a> -->
     <a class="btn btn-dark" href="#">opcion4</a>
         
         <span class="navbar-text">
@@ -34,91 +35,116 @@
         </span>
     
 </nav>
-    <h3 id="progressTitle">Scrapping en progreso</h3>
-    <div class="progress-container">
-        <div id="progressBar" class="progress-bar">
-        <p id="progressText"> 0%</p>   
+    <div id="scrappingContainer">
+        <h3 id="progressTitle">Scrapping en progreso</h3>
+        <div class="loadingDots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div id="progressBar" class="progress-bar">
+            <p id="progressText"></p>   
+            </div>
         </div>
     </div>
-
-    <div id="titleContainer">
-        <img src="Assets/IMGs/scrappyLogo2.png" alt="scrappy logo" height="90">
-        <h3>Scrappy</h3>
-    </div>
-    <div class="neon-form">
-        <form>
-            <div class="mb-3">
-                <label for="especificaciones" class="form-label text-light">ingrese las especificaciones deseadas</label>
-                <input type="text" class="form-control neon-input" id="busquedaInput" placeholder="Ej: marca, modelo, procesador...">
-                <ul id="suggestions">
+    <div id="mainContainer">
+    
+        <div id="VisibleContent">
+            <div id="titleContainer">
+                <img src="Assets/IMGs/scrappyLogo2.png" alt="scrappy logo" height="90">
+                <h3>Scrappy</h3>
+            </div>
+            <div class="neon-form">
+                <form>
+                    <div class="mb-3">
+                        <label for="especificaciones" class="form-label text-light">ingrese las especificaciones deseadas</label>
+                        <input type="text" class="form-control neon-input" id="busquedaInput" placeholder="Ej: marca, modelo, procesador...">
+                        <ul id="suggestions">
+                            
+                        </ul> <!-- donde se mostrarán las sugerencias -->
+                    </div>
                     
-                </ul> <!-- donde se mostrarán las sugerencias -->
+                    <button type="submit" class="btn neon-btn w-100">Buscar</button>
+                </form>
             </div>
-            
-            <button type="submit" class="btn neon-btn w-100">Buscar</button>
-        </form>
-    </div>
-
-    <div class="pages">
-        <h4>páginas consultadas</h4>
-        <div class="pages-logos">
-            <div class="logoContainer">
-                <a href="https://www.fravega.com/l/informatica/notebooks/">
-                    <img class="logoClass" src="Assets/IMGs/marca-fravega.png" alt="">
-                </a>
-            </div>
-            <div class="logoContainer">
-                <a href="https://www.garbarino.com/celulares-notebooks-y-tecnologia/informatica/notebooks-y-pc/notebooks"></a>
-                <img class="logoClass" src="Assets/IMGs/marca-garbarino.png" alt="">
-            </div>
-            <div class="logoContainer">
-                <a href="https://listado.mercadolibre.com.ar/notebook#D[A:notebook]">
-                    <img class="logoClass" src="Assets/IMGs/marca-mercadolibre.png" alt="">
-                </a>
-            </div>
-            <div class="logoContainer">
-                <a href="https://www.musimundo.com/informatica/notebook/c/98">
-                    <img class="logoClass" src="Assets/IMGs/marca-musimundo.png" alt="">
-                </a>
+        
+            <div class="pages">
+                <h4>páginas consultadas</h4>
+                <div class="pages-logos">
+                    <div class="logoContainer">
+                        <a href="https://www.fravega.com/l/informatica/notebooks/">
+                            <img class="logoClass" src="Assets/IMGs/marca-fravega.png" alt="">
+                        </a>
+                    </div>
+                    <div class="logoContainer">
+                        <a href="https://www.garbarino.com/celulares-notebooks-y-tecnologia/informatica/notebooks-y-pc/notebooks"></a>
+                        <img class="logoClass" src="Assets/IMGs/marca-garbarino.png" alt="">
+                    </div>
+                    <div class="logoContainer">
+                        <a href="https://listado.mercadolibre.com.ar/notebook#D[A:notebook]">
+                            <img class="logoClass" src="Assets/IMGs/marca-mercadolibre.png" alt="">
+                        </a>
+                    </div>
+                    <div class="logoContainer">
+                        <a href="https://www.musimundo.com/informatica/notebook/c/98">
+                            <img class="logoClass" src="Assets/IMGs/marca-musimundo.png" alt="">
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
     <!-- Bootstrap JS -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> -->
     <script>
     
-    function checkProgress() {
-    fetch('Action/getProgress.php')
-        .then(response => response.json())
-        .then(data => {
-            const progressBar = document.getElementById('progressBar');
-            progressBar.style.width = data.progress + '%';
-            progressBar.innerText = Math.round(data.progress) + '%';
-            
-            // Si el progreso es 100, detener el chequeo
-            if (data.progress < 100) {
-                setTimeout(checkProgress, 2000); // Chequear cada 2 segundos
+    $('#BTNautoScrapping').click(function(e) {
+        e.preventDefault();
+        const pseudoElemento = $('<div></div>');
+        $('#mainContainer').css({
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0, 0, 0, 0.05)',
+            'backdrop-filter': 'blur(10px)',
+            'z-index': 9999
+        });
+        $('#mainContainer').append(pseudoElemento);
+        /* aplico los siguientes estilos a todos los hijos de mainContainer */
+        const hijos = $('#mainContainer > *');
+        hijos.css({
+        'position': 'relative',
+        'z-index': '1'
+        });
+        $('#scrappingContainer').css('visibility','visible');
+
+    // Enviar la solicitud AJAX al servidor para iniciar el scraping
+    fetch('Action/autoScrapping.php')
+    // luego de recibida la respuesta, se ejecuta la función en el método then()
+    // response = Respuesta HTTP 
+        .then(response => {
+            // el código que se ejecuta solo si la respuesta HTTP es recibida 
+            // (la solicitud se completó exitosamente)
+            if (response.ok) { 
+
+                // respuesta json devuelta por el script de autoScrapping.php al final de la ejecución.
+                if(response.json()){
+                    // escondemos el contenedor que muestra la carga del scrapping
+                    hijos.css({
+                'position': '',
+                'z-index': ''
+            });
+                    $('#scrappingContainer').css('visibility','hidden');
+
+                }
             } else {
-                // Redirigir o mostrar mensaje final
-                window.location.href = '../Scrappy.php';
+                alert("Hubo un problema al iniciar el scraping.");
             }
         })
-        .catch(error => console.error('Error fetching progress:', error));
-}
+        .catch(error => console.error('Error al iniciar el scraping:', error));
+    });
 
-
-    /* function checkProgress() {
-        $.get('Action/getProgress.php', function(data) {
-            const progress = data.progress;
-            $('#progressBar').css('width', progress + '%');
-            $('#progressText').text('Progreso: ' + progress.toFixed(2) + '%');
-
-            if (progress < 100) {
-                setTimeout(checkProgress, 1000); // Repetir cada segundo
-            }
-        });
-    } */
 
     /* function checkProgress() {
             $.ajax({
@@ -156,7 +182,7 @@
     });
         
         $(document).ready(function() {
-            checkProgress();
+            // checkProgress();
             
             $('#busquedaInput').on('input', function() {
 

@@ -21,7 +21,7 @@ use Facebook\WebDriver\WebDriverWait;
 use Symfony\Component\Panther\PantherTestCase;
 
 // ruta al msgedgedriver con el puerto correcto
-$msedgedriverURL = 'http://localhost:58437';
+$msedgedriverURL = 'http://localhost:58651';
 
 // ruta al ejecutable de Microsoft Edge
 $edgeBinary = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe';
@@ -71,11 +71,12 @@ $ColURLs = [
 ];
 
 $ABMNotebook = new ABMNotebook; 
-if($ABMNotebook->deleteRegis() > 0){
+$ABMNotebook->deleteRegis();
+/* if($ABMNotebook->deleteRegis() > 0){
     echo "<h1>Se eliminaron los datos correctamente</h1>";
 }else{
     echo "<h1>No se eliminaron los datos.</h1>";
-}
+} */
 
 $cantURLs = count($ColURLs); #total de páginas a recorrer
 
@@ -88,10 +89,9 @@ $_SESSION['progreso_scrapping'] = 0;
 foreach($ColURLs as $URL => $infoNets){
     $driver->get($URL);
     $index++;
-    usleep(500000);
     // actualizo el progreso: 
     $_SESSION['progreso_scrapping'] = ($index / $cantURLs) * 100;
-    session_write_close(); // Cerrar la sesión para asegurar que se guarde el progreso
+    
     $colNets = $driver->findElements(WebDriverBy::cssSelector($infoNets['classNets']));
 
     foreach($colNets as $notebook){
@@ -128,9 +128,10 @@ foreach($ColURLs as $URL => $infoNets){
 
 // proceso completo
 $_SESSION['progreso_scrapping'] = 100;
+session_write_close(); // Cerrar la sesión para asegurar que se guarde el progreso
 
+echo json_encode(['status'=>true]);
 // Cierra el WebDriver
-sleep(1);
-header('Location: ../Scrappy.php');
+// header('Location: ../Scrappy.php');
 $driver->quit();
 ?>
