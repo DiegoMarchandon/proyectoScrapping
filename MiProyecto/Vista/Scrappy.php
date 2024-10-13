@@ -99,8 +99,11 @@
     
     $('#BTNautoScrapping').click(function(e) {
         e.preventDefault();
-        const pseudoElemento = $('<div></div>');
-        $('#mainContainer').css({
+        const pseudoElemento = $('<div id=ventana></div>');
+        
+        $('#mainContainer').append(pseudoElemento);
+
+        $('#ventana').css({
             position: 'absolute',
             top: 0,
             left: 0,
@@ -108,16 +111,21 @@
             bottom: 0,
             background: 'rgba(0, 0, 0, 0.05)',
             'backdrop-filter': 'blur(10px)',
-            'z-index': 9999
+            'z-index': 9998
         });
-        $('#mainContainer').append(pseudoElemento);
         /* aplico los siguientes estilos a todos los hijos de mainContainer */
-        const hijos = $('#mainContainer > *');
+        /* const hijos = $('#mainContainer > *');
         hijos.css({
-        'position': 'relative',
-        'z-index': '1'
-        });
+        position: 'relative',
+        'z-index': 1
+        }); */
+
         $('#scrappingContainer').css('visibility','visible');
+        
+        $('#VisibleContent').css({
+            'z-index' : 1,
+            position: 'relative'
+        });
 
     // Enviar la solicitud AJAX al servidor para iniciar el scraping
     fetch('Action/autoScrapping.php')
@@ -131,12 +139,23 @@
                 // respuesta json devuelta por el script de autoScrapping.php al final de la ejecución.
                 if(response.json()){
                     // escondemos el contenedor que muestra la carga del scrapping
-                    hijos.css({
-                'position': '',
-                'z-index': ''
-            });
-                    $('#scrappingContainer').css('visibility','hidden');
+                    /* hijos.css({
+                        'position': '',
+                        'z-index': ''
+                    }); */
+                    $('#ventana').css({
+                        position: '',
+                        top: '',
+                        left: '',
+                        right: '',
+                        bottom: '',
+                        background: '',
+                        'backdrop-filter': '',
+                        'z-index': ''
+                    });
 
+                    $('#scrappingContainer').css('visibility','hidden');
+                    $('#VisibleContent').css('visibility','visible');
                 }
             } else {
                 alert("Hubo un problema al iniciar el scraping.");

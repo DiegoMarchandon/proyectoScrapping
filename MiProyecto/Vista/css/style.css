@@ -146,6 +146,7 @@ body {
     visibility: hidden;
     display: flex;
     flex-direction: column;
+    z-index: 9999;
 }
 .loadingDots {
     display: flex;
