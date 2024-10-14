@@ -23,7 +23,7 @@ use Facebook\WebDriver\WebDriverWait;
 use Symfony\Component\Panther\PantherTestCase;
 
 // ruta al msgedgedriver con el puerto correcto
-$msedgedriverURL = 'http://localhost:58437';
+$msedgedriverURL = 'http://localhost:61336';
 
 // ruta al ejecutable de Microsoft Edge
 $edgeBinary = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe';

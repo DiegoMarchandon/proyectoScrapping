@@ -20,24 +20,33 @@ use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\WebDriverWait;
 use Symfony\Component\Panther\PantherTestCase;
 
-// ruta al msgedgedriver con el puerto correcto
-$msedgedriverURL = 'http://localhost:50011';
+// ruta al ejecutable de Microsoft Edge (Diego)
+$rutaExe = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe';
 
-// ruta al ejecutable de Microsoft Edge
-$edgeBinary = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe';
-
-// ruta al msedgedriver, si no está en el PATH
+// ruta al driver de Edge, si no está en el PATH (Diego)
 $msedgedriver = 'C:\\Drivers\\edgedriver_win64\\msedgedriver.exe';
 
+// Nro de puerto obtenido después de ingresar la ubicación de mi driver $msedgedriver en el CMD (Diego)
+$puertoDriver = 'http://localhost:61336';
+
+// En caso de Edge (Diego):
 $capabilities = DesiredCapabilities::microsoftEdge();
+// en caso de Chrome (comentar la anterior):
+// $capabilities = DesiredCapabilities::chrome();
+
+// Modificar ms:edgeOptions por goog:chromeOptions en caso de usar Chrome, moz:firefoxOptions en caso de usar firefox
 $capabilities->setCapability('ms:edgeOptions',[
     
-    'binary' => $edgeBinary,
+    'binary' => $rutaExe,
     'args' => [ '--disable-gpu','--no-sandbox','--disable-popup-blocking','--disable-notifications', '--headless']
 ]);
 
-/* una vez especificadas las capacidades del navegador y la URL del servidor, me conecto al mismo. */
-$driver = RemoteWebDriver::create($msedgedriverURL,$capabilities);
+/* Acá se crea la conexión. Hasta donde ví, existen 2 clases que representan maneras diferentes de conectarse: */
+/* 1) con RemoteWebDriver (las funciones y métodos implementadas acá son de esta clase. Se usa un driver en lugar de simular el comportamiento de Cliente): */
+$driver = RemoteWebDriver::create($puertoDriver,$capabilities);
+/* 2) con Selenium (las funciones y métodos varían. Ver scrapeClient.php que fue implementado con selenium): */
+// $client = Client::createSeleniumClient($puertoDriver,$capabilities);
+
 
 // realiza la solicitud
 
