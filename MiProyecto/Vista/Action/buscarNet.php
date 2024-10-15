@@ -7,7 +7,7 @@ print_r($datos);
 // echo $datos['busquedaInput']."\n";
 // echo $datos;
 echo '<br><h1>Cant de sugerencias: </h1><br>';
-echo "nets sugeridas: ".$datos['infoNets'];
+// echo "nets sugeridas: ".$datos['infoNets'];
 // $colNets = json_encode();
 // foreach()
 echo "\ncantidad: ".count($datos);

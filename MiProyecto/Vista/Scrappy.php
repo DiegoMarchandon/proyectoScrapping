@@ -27,7 +27,6 @@
     <a class="btn btn-dark active" aria-current="page" href="#">Inicio</a>
     <a class="btn btn-dark" href="verBD.php">ver Base de Datos</a>
     <button class="btn btn-dark" id="BTNautoScrapping">Actualizar Base de Datos</button>
-    <!-- <a class="btn btn-dark" href="Action/autoScrapping.php">Actualizar Base de Datos</a> -->
     <a class="btn btn-dark" href="#">opcion4</a>
         
         <span class="navbar-text">
@@ -54,11 +53,11 @@
                 <h3>Scrappy</h3>
             </div>
             <div class="neon-form">
-                <form action="Action/buscarNet.php" method="post" name="formBuscarNet" id="formBuscarNet">
+                <form action="Action/buscarNet.php" method="get" name="formBuscarNet" id="formBuscarNet">
                     <div class="mb-3">
                         <label for="especificaciones" class="form-label text-light">ingrese las especificaciones deseadas</label>
                         <input type="text" class="form-control neon-input" name="busquedaInput" id="busquedaInput" placeholder="Ej: marca, modelo, procesador...">
-                        <input type="hidden" name="infoNets" id="infoNets">
+                        
                         <ul id="suggestions">
                             
                         </ul> <!-- donde se mostrarán las sugerencias -->
@@ -114,12 +113,7 @@
             'backdrop-filter': 'blur(10px)',
             'z-index': 9998
         });
-        /* aplico los siguientes estilos a todos los hijos de mainContainer */
-        /* const hijos = $('#mainContainer > *');
-        hijos.css({
-        position: 'relative',
-        'z-index': 1
-        }); */
+        
 
         $('#scrappingContainer').css('visibility','visible');
         
@@ -140,10 +134,7 @@
                 // respuesta json devuelta por el script de autoScrapping.php al final de la ejecución.
                 if(response.json()){
                     // escondemos el contenedor que muestra la carga del scrapping
-                    /* hijos.css({
-                        'position': '',
-                        'z-index': ''
-                    }); */
+                    
                     $('#ventana').css({
                         position: '',
                         top: '',
@@ -189,9 +180,6 @@
                 // $(this) = elemento que disparó el evento (input con el id)
                 // .val() = valor actual dle campo de texto.
 
-                /* imprimo el valor del input: */
-                // console.log(inputValue);
-
                 if (inputValue.length > 2) {
                     // método AJAX de jquery que realiza una solicitud asíncrona a un servidor. 
                         // acá se utiliza para enviar una solicitud al servidor en busca de sugerencias basadas en lo que el usuario escribió. 
@@ -217,9 +205,8 @@
                             $('#suggestions').css('height','200px');
                             // Mostrar nuevas sugerencias
                             sugerenciasFilter.forEach(function(sugerencia) {
-                                $('#suggestions').append('<li class="itemSugerido" id="'+sugerencia.id+'" style="color:#01c1c1">' + sugerencia.fullname + '</li>');
-                                // guardarlas en un JSON para ser accedido desde otro archivo (el Action con las notebooks de buscarNet)
-                                colNetsSugeridas.push(sugerencia);
+                                $('#suggestions').append('<li class="itemSugerido" style="color:#01c1c1">' + sugerencia.fullname + '</li>');
+                                
                             });
 
                             // Agregar evento click a los elementos de sugerencia
@@ -238,9 +225,6 @@
                                 $('#suggestions').empty(); // Limpiar las sugerencias
                             });
 
-                            
-                            // Aquí deberías procesar y mostrar las sugerencias
-                            // $('#suggestions').html(data);
                         }
                     });
                 } else {
@@ -250,22 +234,7 @@
 
 
             });
-            $('#formBuscarNet').on('submit',function(e){
-
-                e.preventDefault(); 
-                
-
-                // guardo en localStorage (en formato JSON) el conjunto de sugerencias que voy a utilizar
-                //  para mostrar información de las nets buscadas.
-                // localStorage.setItem('NetsSugeridasJSON',JSON.stringify(colNetsSugeridas));
-
-                //si envío el formulario (evento 'submit') && habiendo sugerencias disponibles, reemplazo los datos enviados por el formulario  
-                
-                if(colNetsSugeridas.length > 1){
-                    $('#infoNets').val(JSON.stringify(colNetsSugeridas));                    
-                }
-                this.submit();
-            });
+            
         });
     </script>
 </body>
