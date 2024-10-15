@@ -43,6 +43,15 @@ body {
     color: #000;
 }
 
+.itemSugerido{
+    cursor: pointer;
+}
+
+.itemSugerido:hover{
+    background-color: #004949a2;
+    /* color: #000; */
+}
+
 /* estilos logo + titulo de la pagina */
 #titleContainer{
     display: flex;

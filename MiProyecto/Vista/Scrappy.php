@@ -54,10 +54,11 @@
                 <h3>Scrappy</h3>
             </div>
             <div class="neon-form">
-                <form>
+                <form action="Action/buscarNet.php" method="post" name="formBuscarNet" id="formBuscarNet">
                     <div class="mb-3">
                         <label for="especificaciones" class="form-label text-light">ingrese las especificaciones deseadas</label>
-                        <input type="text" class="form-control neon-input" id="busquedaInput" placeholder="Ej: marca, modelo, procesador...">
+                        <input type="text" class="form-control neon-input" name="busquedaInput" id="busquedaInput" placeholder="Ej: marca, modelo, procesador...">
+                        <input type="hidden" name="infoNets" id="infoNets">
                         <ul id="suggestions">
                             
                         </ul> <!-- donde se mostrarán las sugerencias -->
@@ -163,28 +164,6 @@
         })
         .catch(error => console.error('Error al iniciar el scraping:', error));
     });
-
-
-    /* function checkProgress() {
-            $.ajax({
-                url: 'Action/getProgress.php', // Llama al script que devuelve el progreso
-                method: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    var progress = data.progress;
-                    // Actualizar la barra de progreso
-                    $('#progressBar').css('width', progress + '%').text(progress + '%');
-
-                    // Si no ha llegado al 100%, seguir consultando
-                    if (progress < 100) {
-                        setTimeout(checkProgress, 1000); // Volver a llamar en 1 segundo
-                    }
-                },
-                error: function() {
-                    console.error('Error obteniendo el progreso');
-                }
-            });
-        } */
     
         fetch('Action/sugerencias.php')
     .then(response => {
@@ -201,8 +180,9 @@
     });
         
         $(document).ready(function() {
-            // checkProgress();
             
+            // variable para almacenar las notebooks sugeridas
+            var colNetsSugeridas = [];
             $('#busquedaInput').on('input', function() {
 
                 const inputValue = $(this).val();
@@ -237,9 +217,28 @@
                             $('#suggestions').css('height','200px');
                             // Mostrar nuevas sugerencias
                             sugerenciasFilter.forEach(function(sugerencia) {
-                                $('#suggestions').append('<li style="color:#01c1c1">' + sugerencia.fullname + '</li>');
+                                $('#suggestions').append('<li class="itemSugerido" id="'+sugerencia.id+'" style="color:#01c1c1">' + sugerencia.fullname + '</li>');
+                                // guardarlas en un JSON para ser accedido desde otro archivo (el Action con las notebooks de buscarNet)
+                                colNetsSugeridas.push(sugerencia);
                             });
 
+                            // Agregar evento click a los elementos de sugerencia
+                            $('.itemSugerido').on('click', function() {
+                                
+                                console.log("nets sugeridas: "+colNetsSugeridas + "total: "+colNetsSugeridas.length);
+                                // limpiamos el arreglo para almacenar esta única sugerencia (puesto que nuestras li ahora no estarán)
+                                colNetsSugeridas = [];
+                                // Al hacer clic en una sugerencia, agregarla a las sugerencias seleccionadas
+                                colNetsSugeridas.push($(this).text());
+                                console.log("net sugerida: "+ colNetsSugeridas + "total: "+colNetsSugeridas.length);
+                                // almaceno en el input text la sugerencia de la net almacenada en colNetsSugeridas
+                                $('#busquedaInput').val(colNetsSugeridas);
+                                // y al input oculto, le agrego el id de la net seleccionada.
+                                $('#suggestions').css('height', '0px'); // Ocultar sugerencias
+                                $('#suggestions').empty(); // Limpiar las sugerencias
+                            });
+
+                            
                             // Aquí deberías procesar y mostrar las sugerencias
                             // $('#suggestions').html(data);
                         }
@@ -248,6 +247,24 @@
                     $('#suggestions').css('height','0px');
                     $('#suggestions').empty(); // Limpiar sugerencias si no hay entrada
                 }
+
+
+            });
+            $('#formBuscarNet').on('submit',function(e){
+
+                e.preventDefault(); 
+                
+
+                // guardo en localStorage (en formato JSON) el conjunto de sugerencias que voy a utilizar
+                //  para mostrar información de las nets buscadas.
+                // localStorage.setItem('NetsSugeridasJSON',JSON.stringify(colNetsSugeridas));
+
+                //si envío el formulario (evento 'submit') && habiendo sugerencias disponibles, reemplazo los datos enviados por el formulario  
+                
+                if(colNetsSugeridas.length > 1){
+                    $('#infoNets').val(JSON.stringify(colNetsSugeridas));                    
+                }
+                this.submit();
             });
         });
     </script>
