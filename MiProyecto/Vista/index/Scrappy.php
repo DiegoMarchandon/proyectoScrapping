@@ -1,38 +1,7 @@
 <?php
-// include_once('estructura/header.php');
-// require 'Composer/vendor/autoload.php';
-// require '../Utils/funciones.php';
-// require 'Action/autoScrapping.php';
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scrappy</title>
+include_once('../estructura/header.php');
 
-    <!-- jQuery -->
-    <script src="js/jquery-3.7.1.js"></script>
-    <!-- script de autompletado -->
-    <script src="Action/sugerencias.php"></script>
-    <!-- Bootstrap CSS -->
-     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-<nav id="barraNav" class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
-  
-    <a class="navbar-brand" href="#">Grupo 1 PWD</a>
-    <a class="btn btn-dark active" aria-current="page" href="#">Inicio</a>
-    <a class="btn btn-dark" href="verBD.php">ver Base de Datos</a>
-    <button class="btn btn-dark" id="BTNautoScrapping">Actualizar Base de Datos</button>
-    <a class="btn btn-dark" href="#">opcion4</a>
-        
-        <span class="navbar-text">
-            TP usando librerías
-        </span>
-    
-</nav>
+?>
     <div id="scrappingContainer">
         <h3 id="progressTitle">Scrapping en progreso</h3>
         <div class="loadingDots">
@@ -48,11 +17,11 @@
     
         <div id="VisibleContent">
             <div id="titleContainer">
-                <img src="Assets/IMGs/scrappyLogo2.png" alt="scrappy logo" height="90">
+                <img src="../Assets/IMGs/scrappyLogo2.png" alt="scrappy logo" height="90">
                 <h3>Scrappy</h3>
             </div>
             <div class="neon-form">
-                <form action="Action/buscarNet.php" method="get" name="formBuscarNet" id="formBuscarNet">
+                <form action="../Action/buscarNet.php" method="get" name="formBuscarNet" id="formBuscarNet">
                     <div class="mb-3">
                         <label for="especificaciones" class="form-label text-light">ingrese las especificaciones deseadas</label>
                         <input type="text" class="form-control neon-input" name="busquedaInput" id="busquedaInput" placeholder="Ej: marca, modelo, procesador...">
@@ -71,29 +40,28 @@
                 <div class="pages-logos">
                     <div class="logoContainer">
                         <a href="https://www.fravega.com/l/informatica/notebooks/">
-                            <img class="logoClass" src="Assets/IMGs/marca-fravega.png" alt="">
+                            <img class="logoClass" src="../Assets/IMGs/marca-fravega.png" alt="logo Fravega">
                         </a>
                     </div>
                     <div class="logoContainer">
                         <a href="https://www.garbarino.com/celulares-notebooks-y-tecnologia/informatica/notebooks-y-pc/notebooks"></a>
-                        <img class="logoClass" src="Assets/IMGs/marca-garbarino.png" alt="">
+                        <img class="logoClass" src="../Assets/IMGs/marca-garbarino.png" alt="logo Garbarino">
                     </div>
                     <div class="logoContainer">
                         <a href="https://listado.mercadolibre.com.ar/notebook#D[A:notebook]">
-                            <img class="logoClass" src="Assets/IMGs/marca-mercadolibre.png" alt="">
+                            <img class="logoClass" src="../Assets/IMGs/marca-mercadolibre.png" alt="logo Mercadolibre">
                         </a>
                     </div>
                     <div class="logoContainer">
                         <a href="https://www.musimundo.com/informatica/notebook/c/98">
-                            <img class="logoClass" src="Assets/IMGs/marca-musimundo.png" alt="">
+                            <img class="logoClass" src="../Assets/IMGs/marca-musimundo.png" alt="logo Musimundo">
                         </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Bootstrap JS -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> -->
+    
     <script>
     
     $('#BTNautoScrapping').click(function(e) {
@@ -122,7 +90,7 @@
         });
 
     // Enviar la solicitud AJAX al servidor para iniciar el scraping
-    fetch('Action/autoScrapping.php')
+    fetch('../Action/autoScrapping.php')
     // luego de recibida la respuesta, se ejecuta la función en el método then()
     // response = Respuesta HTTP 
         .then(response => {
@@ -155,7 +123,7 @@
         .catch(error => console.error('Error al iniciar el scraping:', error));
     });
     
-        fetch('Action/sugerencias.php')
+        fetch('../Action/sugerencias.php')
     .then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -184,7 +152,7 @@
                         // acá se utiliza para enviar una solicitud al servidor en busca de sugerencias basadas en lo que el usuario escribió. 
                     $.ajax({
                         // ruta que procesará la solicitud del servidor.
-                        url: 'Action/sugerencias.php', // Ruta al script en Action
+                        url: '../Action/sugerencias.php', // Ruta al script en Action
                         // tipo de solicitud HTTP. GET implicará que los datos se enviarán en la URL
                         method: 'GET',
                         // tipo de datos que se espera recibir de la respuesta. Obj o Array de formato JSON
@@ -238,3 +206,6 @@
     </script>
 </body>
 </html>
+<?php
+include ('../estructura/footer.php');
+?>

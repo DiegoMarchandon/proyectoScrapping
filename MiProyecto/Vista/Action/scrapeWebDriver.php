@@ -171,6 +171,7 @@ foreach($ColURLs as $URL => $infoNets){
                 echo "Mensaje de error: " . $e->getMessage() . "\n";
             }
             $precioNet = $notebook->findElement(WebDriverBy::cssSelector($infoNets['precioNet']))->getText();
+            
         }else{
             $nombreNet = $notebook->findElement(WebDriverBy::cssSelector($infoNets['nombreNet']))->getText();
             // $nombreNet = $driver->findElement(WebDriverBy::xpath("//*[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'notebook')]"))->getText();

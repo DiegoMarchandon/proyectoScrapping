@@ -1,6 +1,7 @@
 
 <?php
 require '../Composer/vendor/autoload.php';
+include '../estructura/header.php';
 use Controlador\ABMNotebook;
 
 $ABMNotebook = new ABMNotebook;
@@ -9,24 +10,9 @@ $especificaciones = $datos['busquedaInput'];
 $coincidenciasNet = null;
 $coincidenciasNet = $ABMNotebook->returnMatches($especificaciones);
 
-// print_r($coincidenciasNet);
-/* foreach($coincidenciasNet as $net){
-    echo "<br>".print_r($net['fullname'])."<br>";
-} */
-
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- bootstrap -->
-     <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <title>Notebooks coincidentes</title>
-</head>
-<body class="bg-dark text-light">
-<div class="container mt-5">
+    <div class="container mt-5">
         <div class="row">
             <?php if (empty($datos['busquedaInput']) || empty($coincidenciasNet)): ?>
                 <h1>No hubo búsquedas relacionadas.</h1>
@@ -51,3 +37,7 @@ $coincidenciasNet = $ABMNotebook->returnMatches($especificaciones);
     </div>
 </body>
 </html>
+
+<?php
+include ('../estructura/footer.php');
+?>

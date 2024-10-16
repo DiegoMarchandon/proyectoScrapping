@@ -1,41 +1,13 @@
 <?php
 
-require './Composer/vendor/autoload.php';
-
+require '../Composer/vendor/autoload.php';
+include '../estructura/header.php';
 use Controlador\ABMNotebook;
 $ABMNotebook = new ABMNotebook;  
 $colNets = $ABMNotebook->buscarArray(null);
-// echo "hola\n";
-// print_r($colNets[0]['Marca']);
+
 ?>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Scrappy</title>
-    
-        <!-- jQuery -->
-        <!-- <script src="js/jquery-3.7.1.js"></script> -->
-        <!-- script de autompletado -->
-        <!-- <script src="Action/sugerencias.php"></script> -->
-        <!-- Bootstrap CSS -->
-         <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/style.css">
-    </head>
-    <body class="bg-dark text-light">
-    <nav id="barraNav" class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
-  
-  <a class="navbar-brand" href="#">Grupo 1 PWD</a>
-  <a class="btn btn-dark active" aria-current="page" href="Scrappy.php">Inicio</a>
-  <a class="btn btn-dark" href="">ver Base de Datos</a>
-  <a class="btn btn-dark" href="Action/autoScrapping.php">Actualizar Base de Datos</a>
-  <a class="btn btn-dark" href="#">opcion4</a>
-      
-      <span class="navbar-text">
-          TP usando librerías
-      </span>
-  
-</nav>
+
         <div class="card bg-dark text-light">
                 <div class="card-header">
                     <h4>Lista de notebooks</h4>
@@ -69,5 +41,10 @@ $colNets = $ABMNotebook->buscarArray(null);
                     </table>
                 </div>
             </div>
+            <div class=" mb-5"></div>
     </body>
 </html>
+<?php 
+
+include_once('../estructura/footer.php');
+?>
