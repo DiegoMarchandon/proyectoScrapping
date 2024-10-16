@@ -27,7 +27,7 @@ $rutaExe = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe';
 $msedgedriver = 'C:\\Drivers\\edgedriver_win64\\msedgedriver.exe';
 
 // Nro de puerto obtenido después de ingresar la ubicación de mi driver $msedgedriver en el CMD (Diego)
-$puertoDriver = 'http://localhost:63088';
+$puertoDriver = 'http://localhost:60190';
 
 // En caso de Edge (Diego):
 $capabilities = DesiredCapabilities::microsoftEdge();
