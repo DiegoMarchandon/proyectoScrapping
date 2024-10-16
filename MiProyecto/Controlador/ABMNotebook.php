@@ -184,6 +184,31 @@ class ABMNotebook{
         return $arreglo;
     }
 
+
+    /**
+     * devuelve los arreglos asociativos de notebooks que coinciden con el input ingresado
+     */
+    public function returnMatches($input){
+        $colNets = $this->buscarArray(null);
+        $coincidenciaNet = [];
+        // el "use" pasado a la función callback de array_filter se utiliza para que el $input sea accesible adentro de la misma.
+            // pasamos & al inicio de la variable para indicar que la pasamos "por referencia" en lugar de pasar una copia de la misma. 
+            // Lo que significa que cualquier modificación a la variable dentro de la función también afectará a la variable original.
+        array_filter($colNets,function($notebook) use ($input, &$coincidenciaNet){
+            // buscamos la aparición del $input en el 'fullname' de cada notebook
+            // echo "<br>----input:".$input."----<br>";
+            // echo "<br>----notebook fullname----<br>";
+            // print_r($notebook['fullname']);
+            $busqueda = stripos(strtolower($notebook['fullname']),strtolower($input));
+            // !== false porque la coincidencia también se puede encontrar en la posición 0
+            if($busqueda !== false){
+                // echo "<br><b>hay coincidencia</b><br>";
+                $coincidenciaNet[] = $notebook;
+            }
+        });
+        return $coincidenciaNet;
+    }
+
     /**
      * Actualiza la base de datos, eliminando los datos anteriores y agregando nuevos.
      * Retorna un numero mayor a 0 si se pudo. -1 caso contrario.

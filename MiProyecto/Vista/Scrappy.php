@@ -1,5 +1,4 @@
 <?php
-// falta terminar de configurar el header
 // include_once('estructura/header.php');
 // require 'Composer/vendor/autoload.php';
 // require '../Utils/funciones.php';
