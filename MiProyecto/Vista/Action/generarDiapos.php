@@ -1,5 +1,6 @@
 <?php
 require_once '../Composer/vendor/autoload.php';
+include_once '../estructura/header.php';
 
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\IOFactory;
@@ -89,15 +90,28 @@ $writerPPTX->save(__DIR__ . '/sample.pptx');
     <title>Diapositivas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="bg-light">
+<body>
 
     <div class="container vh-100 d-flex flex-column justify-content-center align-items-center">
         <div class="text-center">
             <h1 class="display-4 text-success mb-4">Presentación generada correctamente</h1>
             <p class="lead">La presentación se ha guardado como <strong>sample.pptx</strong>.</p>
         </div>
+        <div class=" d-flex">
+            <form action="abrirPPT.php" method="post">
+                <button class="btn btn-outline-success btn-lg m-2">Abrir Diapositiva</button>
+            </form>
+            <form action="eliminarPPT.php" method="post">
+                <button class="btn btn-outline-danger btn-lg m-2">Borrar Diapositiva</button>
+            </form>
+            <!-- <button class="btn btn-outline-success btn-lg m-2" onclick="openPPT()">Abrir Diapositiva</button> -->
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
 </body>
 </html>
+<?php
+include_once '../estructura/footer.php';
+?>
