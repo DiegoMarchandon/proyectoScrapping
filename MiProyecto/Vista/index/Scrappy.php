@@ -2,6 +2,8 @@
 include_once('../estructura/header.php');
 
 ?>
+<body class="d-flex justify-content-center align-items-center flex-column">
+    
     <div id="scrappingContainer">
         <h3 id="progressTitle">Scrapping en progreso</h3>
         <div class="loadingDots">
@@ -35,9 +37,9 @@ include_once('../estructura/header.php');
                 </form>
             </div>
         
-            <div class="pages">
+            <div class="pages d-flex flex-column">
                 <h4>páginas consultadas</h4>
-                <div class="pages-logos">
+                <div class="pages-logos d-flex">
                     <div class="logoContainer">
                         <a href="https://www.fravega.com/l/informatica/notebooks/">
                             <img class="logoClass" src="../Assets/IMGs/marca-fravega.png" alt="logo Fravega">

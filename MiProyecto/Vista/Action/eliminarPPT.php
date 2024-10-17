@@ -1,6 +1,6 @@
 <?php
 // Ruta del archivo PPTX
-$filePath = __DIR__ . '/sample.pptx';
+$filePath = __DIR__ . '/notebooks.pptx';
 // Verificar si el archivo existe y eliminarlo
 if (file_exists($filePath)) {
     unlink($filePath);

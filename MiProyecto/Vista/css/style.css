@@ -1,11 +1,6 @@
 body {
     position: relative;
     background-color: #000;
-    /* height: 100vh; */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
 }
 /* formulario */
 .neon-form {
@@ -81,14 +76,9 @@ body {
 
 /* paginas consultadas */
 .pages{
-    display: flex;
-    flex-direction: column;
     margin-top: 20px;
 }
 
-.pages-logos{
-    display: flex;
-}
 .logoContainer{
     margin: 25px;
     border-radius: 30%;

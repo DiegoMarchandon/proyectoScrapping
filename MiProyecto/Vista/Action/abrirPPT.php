@@ -1,7 +1,7 @@
 <?php
 // script de la ejecución para abrir el powerPoint
 // Ruta del archivo PPTX
-$filePath = __DIR__ . '/sample.pptx';
+$filePath = __DIR__ . '/notebooks.pptx';
 // Ejecutar el comando para abrir PowerPoint con el archivo
 shell_exec('start "" "' . $filePath . '"');
 
