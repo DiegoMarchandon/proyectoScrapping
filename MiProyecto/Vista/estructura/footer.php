@@ -7,3 +7,6 @@
 </svg></a> 2024
   </div>
 </footer>
+
+</body>
+</html>  

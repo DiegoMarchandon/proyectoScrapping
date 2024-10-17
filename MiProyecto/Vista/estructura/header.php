@@ -20,7 +20,6 @@
     <a class="btn btn-dark active" aria-current="page" href="Scrappy.php">Inicio</a>
     <a class="btn btn-dark" href="verBD.php">ver Base de Datos</a>
     <button class="btn btn-dark" id="BTNautoScrapping">Actualizar Base de Datos</button>
-    <a class="btn btn-dark" href="#">opcion4</a>
         
         <span class="navbar-text">
             TP usando librerías

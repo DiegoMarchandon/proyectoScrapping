@@ -3,10 +3,13 @@
 require '../Composer/vendor/autoload.php';
 include '../estructura/header.php';
 use Controlador\ABMNotebook;
+use Facebook\WebDriver\Exception\NoSuchAlertException;
+use Facebook\WebDriver\Exception\NoSuchElementException;
 use Symfony\Component\Panther\Client;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\Exception;
 
 // Inicializacion de la clase ABMNotebook
 $ABMNotebook = new ABMNotebook();
@@ -29,21 +32,12 @@ $capabilities->setCapability('ms:edgeOptions', [
 // Conexión al WebDriver
 $driver = RemoteWebDriver::create($msedgedriverURL, $capabilities);
 
-// Ruta para guardar las imagenes (coso la usamos despues pa poder generar la diapo)
-$rutaGuardado = '../Assets/ImagenesTemp/';
-
-// Verificar si la carpeta no existe y crearla si es necesario
-if (!is_dir($rutaGuardado)) {
-    if (!mkdir($rutaGuardado, 0755, true)) {
-        die("Error: No se pudo crear la carpeta para las imágenes.");
-    }
-}
-
 // Obtener imagenes de Google para cada notebook y almacenarlas
 $notebookData = [];
     foreach ($coincidenciasNet as $notebook) {
         $url = 'https://www.google.com/search?q=' . str_replace(' ', '+', $notebook['fullname']) . '&udm=2';
         $driver->get($url);
+        $driver->wait(10);
 
         // Buscar la imagen utilizando XPath
         $image = $driver->findElement(WebDriverBy::xpath('/html/body/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/h3/a/div/div/div/g-img/*'));
