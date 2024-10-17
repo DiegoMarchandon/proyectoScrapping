@@ -3,36 +3,124 @@
 require '../Composer/vendor/autoload.php';
 include '../estructura/header.php';
 use Controlador\ABMNotebook;
+use Symfony\Component\Panther\Client;
+use Facebook\WebDriver\Remote\DesiredCapabilities;
+use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Facebook\WebDriver\WebDriverBy;
 
-$ABMNotebook = new ABMNotebook;
+// Inicializacion de la clase ABMNotebook
+$ABMNotebook = new ABMNotebook();
 $datos = darDatosSubmitted();
 $especificaciones = $datos['busquedaInput'];
-$coincidenciasNet = null;
 $coincidenciasNet = $ABMNotebook->returnMatches($especificaciones);
+$json = json_encode($coincidenciasNet);
+
+// Configuración del WebDriver para Microsoft Edge
+$msedgedriverURL = 'http://localhost:61336'; 
+$edgeBinary = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe';
+$msedgedriver = 'C:\\Drivers\\edgedriver_win64\\msedgedriver.exe';
+
+$capabilities = DesiredCapabilities::microsoftEdge();
+$capabilities->setCapability('ms:edgeOptions', [
+    'binary' => $edgeBinary,
+    'args' => ['--disable-gpu', '--no-sandbox', '--disable-popup-blocking', '--disable-notifications', '--headless']
+]);
+
+// Conexión al WebDriver
+$driver = RemoteWebDriver::create($msedgedriverURL, $capabilities);
+
+// Ruta para guardar las imagenes (coso la usamos despues pa poder generar la diapo)
+$rutaGuardado = '../Assets/ImagenesTemp/';
+
+// Verificar si la carpeta no existe y crearla si es necesario
+if (!is_dir($rutaGuardado)) {
+    if (!mkdir($rutaGuardado, 0755, true)) {
+        die("Error: No se pudo crear la carpeta para las imágenes.");
+    }
+}
+
+// Obtener imagenes de Google para cada notebook y almacenarlas
+$notebookData = [];
+foreach ($coincidenciasNet as $notebook) {
+    $url = 'https://www.google.com/search?q=' . str_replace(' ', '+', $notebook['fullname']) . '&udm=2';
+    $driver->get($url);
+
+    // Buscar la imagen utilizando XPath
+    $image = $driver->findElement(WebDriverBy::xpath('/html/body/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/h3/a/div/div/div/g-img/*'));
+    $imageSrc = $image->getAttribute('src');
+
+    // Si la imagen es en formato base64  SIUUUUUUUU
+    if (preg_match('/^data:image\/(\w+);base64,/', $imageSrc, $type)) {
+        $base64String = preg_replace('/^data:image\/\w+;base64,/', '', $imageSrc);
+        $imageData = base64_decode($base64String);
+
+        // Guardar la imagen en la carpeta especificada
+        $outputFile = $rutaGuardado . uniqid() . '.' . $type[1];
+        file_put_contents($outputFile, $imageData);
+
+        // Almacenar la informacion de la notebook junto con la ruta de la imagen
+        $notebookData[] = [
+            'fullname' => $notebook['fullname'],
+            'marca' => $notebook['marca'],
+            'procesador' => $notebook['procesador'],
+            'sitio' => $notebook['sitio'],
+            'precio' => $notebook['precio'],
+            'imageSrc' => $outputFile
+        ];
+    } else {
+        // Si no es base64 guardar la URL de la imagen por si las moscas lo dejo
+        $notebookData[] = [
+            'fullname' => $notebook['fullname'],
+            'marca' => $notebook['marca'],
+            'procesador' => $notebook['procesador'],
+            'sitio' => $notebook['sitio'],
+            'precio' => $notebook['precio'],
+            'imageSrc' => $imageSrc
+        ];
+    }
+}
+
+// Cerrar el WebDriver
+$driver->quit();
+
+// Pasar los datos de las notebooks como JSON
+$json = json_encode($notebookData);
 
 ?>
 
-    <div class="container mt-5">
-        <div class="row">
-            <?php if (empty($datos['busquedaInput']) || empty($coincidenciasNet)): ?>
-                <h1>No hubo búsquedas relacionadas.</h1>
-            <?php else: ?>
-                <?php foreach($coincidenciasNet as $net): ?>
-                    <div class="col-md-4 mb-4">
-                        <div class="card bg-secondary text-white">
-                            <div class="card-body">
-                                <h5 class="card-title"><?php echo $net['fullname']; ?></h5>
-                                <p class="card-text">
-                                    <strong>Marca:</strong> <?php echo $net['marca']; ?><br>
-                                    <strong>Procesador:</strong> <?php echo $net['procesador']; ?><br>
-                                    <strong>Sitio:</strong> <?php echo $net['sitio']; ?><br>
-                                    <strong>Precio:</strong> <?php echo $net['precio']; ?>
-                                </p>
+<div class="container mt-5">
+        <div class="card bg-dark">
+            <div class="card-header text-light h1 my-5 d-flex justify-content-between align-items-center">
+                Coincidencias con la búsqueda
+                <?php if (!empty($datos['busquedaInput']) && !empty($coincidenciasNet)): ?>
+                    <form action="generarDiapos.php" method="post">
+                        <input type="hidden" id="notebooks" name="notebooks" value='<?php echo $json; ?>'>
+                        <input type="submit" class="btn btn-light btn-lg" value="Generar diapo">
+                    </form>
+                <?php endif; ?>
+            </div>
+            <div class="card-body row">
+                <?php if (empty($datos['busquedaInput']) || empty($coincidenciasNet)): ?>
+                    <h1>No hubo búsquedas relacionadas.</h1>
+                <?php else: ?>
+                    <?php foreach ($notebookData as $notebook): ?>
+                        <div class="col-md-4 mb-4">
+                            <div class="card bg-secondary text-white">
+                                <img src="<?php echo $notebook['imageSrc']; ?>" class="card-img-top" alt="Imagen de <?php echo $notebook['fullname']; ?>">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo $notebook['fullname']; ?></h5>
+                                    <p class="card-text">
+                                        <strong>Marca:</strong> <?php echo $notebook['marca']; ?><br>
+                                        <strong>Procesador:</strong> <?php echo $notebook['procesador']; ?><br>
+                                        <strong>Sitio:</strong> <?php echo $notebook['sitio']; ?><br>
+                                        <strong>Precio:</strong> <?php echo $notebook['precio']; ?>
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
 </body>
