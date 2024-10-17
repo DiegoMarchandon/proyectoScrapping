@@ -4,6 +4,7 @@ include_once '../estructura/header.php';
 
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\IOFactory;
+use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Alignment;
 
@@ -34,28 +35,42 @@ foreach ($notebooks as $notebook) {
     $diapo->setName($notebook['fullname']);
 
     // Agregar la imagen de la notebook
-    if (file_exists($notebook['imageSrc'])) {
-        $image = $diapo->createDrawingShape();
-        $image->setName('Image of ' . $notebook['fullname']);
-        $image->setDescription('Image of ' . $notebook['fullname']);
-        $image->setPath($notebook['imageSrc']);
-        $image->setHeight(300);
-        $image->setOffsetX(100);
-        $image->setOffsetY(150);
-        $image->getShadow()->setVisible(true);
-    }
+        // Si la imagen es en formato base64  SIUUUUUUUU
+        if (preg_match('/^data:image\/(\w+);base64,/', $notebook['imageSrc'], $type)) {
+            $data = "'".$notebook['imageSrc']."'";
+            $image = new Base64();
+            $image->setName('Image of ' . $notebook['fullname']);
+            $image->setDescription('Image of ' . $notebook['fullname']);
+            $image->setData($data);
+            $image->setHeight(200);
+            $image->setWidth(250);
+            $image->setOffsetX(100);
+            $image->setOffsetY(300);
+            $image->getShadow()->setVisible(true);
+            $diapo->addShape($image);
+        } else {
+            $image = $diapo->createDrawingShape();
+            $image->setName('Image of ' . $notebook['fullname']);
+            $image->setDescription('Image of ' . $notebook['fullname']);
+            $image->setPath($notebook['imageSrc']);
+            $image->setHeight(200);
+            $image->setWidth(250);
+            $image->setOffsetX(100);
+            $image->setOffsetY(300);
+            $image->getShadow()->setVisible(true);
+        }
 
     // Titulo de la notebook (fullname)
     $formaTexto = $diapo->createRichTextShape();
     $formaTexto
         ->setHeight(50)
-        ->setWidth(600)
-        ->setOffsetX(100)
+        ->setWidth(800)
+        ->setOffsetX(75)
         ->setOffsetY(50);
     $formaTexto->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
     $texto = $formaTexto->createTextRun($notebook['fullname']);
     $texto->getFont()->setBold(true)
-                    ->setSize(20)
+                    ->setSize(30)
                     ->setColor(new Color('FFE06B20'));
 
     // Informacion adicional
@@ -68,17 +83,17 @@ foreach ($notebooks as $notebook) {
     $formaInfo
         ->setHeight(200)
         ->setWidth(600)
-        ->setOffsetX(100)
-        ->setOffsetY(470);
+        ->setOffsetX(400)
+        ->setOffsetY(300);
     $formaInfo->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
     $infoTexto = $formaInfo->createTextRun($info);
-    $infoTexto->getFont()->setSize(20)
+    $infoTexto->getFont()->setSize(25)
                         ->setColor(new Color('FF000000'));
 }
 
 // Guardar la presentacion en un archivo
 $writerPPTX = IOFactory::createWriter($presentacion, 'PowerPoint2007');
-$writerPPTX->save(__DIR__ . '/sample.pptx');
+$writerPPTX->save(__DIR__ . '/notebooks.pptx');
 
 ?>
 
@@ -95,7 +110,7 @@ $writerPPTX->save(__DIR__ . '/sample.pptx');
     <div class="container vh-100 d-flex flex-column justify-content-center align-items-center">
         <div class="text-center">
             <h1 class="display-4 text-success mb-4">Presentación generada correctamente</h1>
-            <p class="lead">La presentación se ha guardado como <strong>sample.pptx</strong>.</p>
+            <p class="lead">La presentación se ha guardado como <strong>notebooks.pptx</strong>.</p>
         </div>
         <div class=" d-flex">
             <form action="abrirPPT.php" method="post">
