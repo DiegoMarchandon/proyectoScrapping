@@ -16,7 +16,7 @@ $coincidenciasNet = $ABMNotebook->returnMatches($especificaciones);
 $json = json_encode($coincidenciasNet);
 
 // Configuración del WebDriver para Microsoft Edge
-$msedgedriverURL = 'http://localhost:61336'; 
+$msedgedriverURL = 'http://localhost:49799'; 
 $edgeBinary = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe';
 $msedgedriver = 'C:\\Drivers\\edgedriver_win64\\msedgedriver.exe';
 
@@ -28,16 +28,6 @@ $capabilities->setCapability('ms:edgeOptions', [
 
 // Conexión al WebDriver
 $driver = RemoteWebDriver::create($msedgedriverURL, $capabilities);
-
-// Ruta para guardar las imagenes (coso la usamos despues pa poder generar la diapo)
-$rutaGuardado = '../Assets/ImagenesTemp/';
-
-// Verificar si la carpeta no existe y crearla si es necesario
-if (!is_dir($rutaGuardado)) {
-    if (!mkdir($rutaGuardado, 0755, true)) {
-        die("Error: No se pudo crear la carpeta para las imágenes.");
-    }
-}
 
 // Obtener imagenes de Google para cada notebook y almacenarlas
 $notebookData = [];
