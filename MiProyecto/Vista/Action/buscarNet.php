@@ -41,34 +41,17 @@ if (!is_dir($rutaGuardado)) {
 
 // Obtener imagenes de Google para cada notebook y almacenarlas
 $notebookData = [];
-foreach ($coincidenciasNet as $notebook) {
-    $url = 'https://www.google.com/search?q=' . str_replace(' ', '+', $notebook['fullname']) . '&udm=2';
-    $driver->get($url);
+    foreach ($coincidenciasNet as $notebook) {
+        $url = 'https://www.google.com/search?q=' . str_replace(' ', '+', $notebook['fullname']) . '&udm=2';
+        $driver->get($url);
 
-    // Buscar la imagen utilizando XPath
-    $image = $driver->findElement(WebDriverBy::xpath('/html/body/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/h3/a/div/div/div/g-img/*'));
-    $imageSrc = $image->getAttribute('src');
+        // Buscar la imagen utilizando XPath
+        $image = $driver->findElement(WebDriverBy::xpath('/html/body/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/h3/a/div/div/div/g-img/*'));
 
-    // Si la imagen es en formato base64  SIUUUUUUUU
-    if (preg_match('/^data:image\/(\w+);base64,/', $imageSrc, $type)) {
-        $base64String = preg_replace('/^data:image\/\w+;base64,/', '', $imageSrc);
-        $imageData = base64_decode($base64String);
+        if ($image == null) {
+            $imageSrc = "https://cdn-icons-png.freepik.com/512/13434/13434972.png";
+        } else $imageSrc = $image->getAttribute('src');
 
-        // Guardar la imagen en la carpeta especificada
-        $outputFile = $rutaGuardado . uniqid() . '.' . $type[1];
-        file_put_contents($outputFile, $imageData);
-
-        // Almacenar la informacion de la notebook junto con la ruta de la imagen
-        $notebookData[] = [
-            'fullname' => $notebook['fullname'],
-            'marca' => $notebook['marca'],
-            'procesador' => $notebook['procesador'],
-            'sitio' => $notebook['sitio'],
-            'precio' => $notebook['precio'],
-            'imageSrc' => $outputFile
-        ];
-    } else {
-        // Si no es base64 guardar la URL de la imagen por si las moscas lo dejo
         $notebookData[] = [
             'fullname' => $notebook['fullname'],
             'marca' => $notebook['marca'],
@@ -78,7 +61,6 @@ foreach ($coincidenciasNet as $notebook) {
             'imageSrc' => $imageSrc
         ];
     }
-}
 
 // Cerrar el WebDriver
 $driver->quit();
