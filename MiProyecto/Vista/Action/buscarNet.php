@@ -19,7 +19,7 @@ $coincidenciasNet = $ABMNotebook->returnMatches($especificaciones);
 $json = json_encode($coincidenciasNet);
 
 // Configuración del WebDriver para Microsoft Edge
-$msedgedriverURL = 'http://localhost:61336'; 
+$msedgedriverURL = 'http://localhost:49799'; 
 $edgeBinary = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe';
 $msedgedriver = 'C:\\Drivers\\edgedriver_win64\\msedgedriver.exe';
 
