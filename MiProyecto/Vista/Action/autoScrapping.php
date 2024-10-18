@@ -2,13 +2,7 @@
 // script que se encarga de cargar automáticamente la base de datos con los distintos datos recopilados de las notebooks
 // 1) crear un controlador en Action que se encargue de consultar las diferentes páginas web, realizar el scraping, y cargar los resultados en la base de datos.
 
-// inicio una sesión para almacenar los datos del prograso del scraping en una variable superglobal
-session_start();
-
-// require 'Composer/vendor/autoload.php';
 require '../Composer/vendor/autoload.php';
-// require '../Utils/funciones.php';
-
 
 use Controlador\ABMNotebook;
 use Symfony\Component\Panther\Client;
@@ -38,7 +32,7 @@ $capabilities = DesiredCapabilities::microsoftEdge();
 $capabilities->setCapability('ms:edgeOptions',[
     
     'binary' => $rutaExe,
-    'args' => [ '--disable-gpu','--no-sandbox','--disable-popup-blocking','--disable-notifications', '--headless']
+    'args' => [ '--disable-gpu','--no-sandbox']
 ]);
 
 /* Acá se crea la conexión. Hasta donde ví, existen 2 clases que representan maneras diferentes de conectarse: */
@@ -87,19 +81,13 @@ $ABMNotebook->deleteRegis();
     echo "<h1>No se eliminaron los datos.</h1>";
 } */
 
-$cantURLs = count($ColURLs); #total de páginas a recorrer
-
 /* cada clave ($URL) guarda como valor una coleccion de clases ($infoNets) relacionadas con las notebooks de su respectiva página */
 // creo una variable index para detectar en cuál elemento de mi arreglo asociativo estoy 
 $index = 0;
-// inicializo el porcentaje de scrapping
-$_SESSION['progreso_scrapping'] = 0;
 
 foreach($ColURLs as $URL => $infoNets){
     $driver->get($URL);
     $index++;
-    // actualizo el progreso: 
-    $_SESSION['progreso_scrapping'] = ($index / $cantURLs) * 100;
     
     $colNets = $driver->findElements(WebDriverBy::cssSelector($infoNets['classNets']));
 
@@ -135,12 +123,5 @@ foreach($ColURLs as $URL => $infoNets){
     }
 }
 
-// proceso completo
-$_SESSION['progreso_scrapping'] = 100;
-session_write_close(); // Cerrar la sesión para asegurar que se guarde el progreso
-
-echo json_encode(['status'=>true]);
-// Cierra el WebDriver
-// header('Location: ../Scrappy.php');
 $driver->quit();
 ?>

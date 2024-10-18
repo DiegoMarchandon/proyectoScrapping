@@ -10,7 +10,7 @@ C:\Drivers\edgedriver_win64\msedgedriver.exe
 */
 
 require '../Composer/vendor/autoload.php';
-require '../../Utils/funciones.php';
+// require '../../Utils/funciones.php';
 
 use Controlador\ABMNotebook;
 use Symfony\Component\Panther\Client;
@@ -23,7 +23,7 @@ use Facebook\WebDriver\WebDriverWait;
 use Symfony\Component\Panther\PantherTestCase;
 
 // ruta al msgedgedriver con el puerto correcto
-$msedgedriverURL = 'http://localhost:61336';
+$msedgedriverURL = 'http://localhost:49799';
 
 // ruta al ejecutable de Microsoft Edge
 $edgeBinary = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe';
@@ -178,10 +178,10 @@ foreach($ColURLs as $URL => $infoNets){
             $precioNet = $notebook->findElement(WebDriverBy::cssSelector($infoNets['precioNet']))->getText();
         }
         
-        // echo "\n-------------INICIO--------------\n";    
-        // echo "\nproducto: ".$nombreNet."\n";
-        // echo "\nprecio: ".digitsOnly($precioNet)."\n";
-        // echo "\n-------------FIN--------------\n";
+        echo "\n-------------INICIO--------------\n";    
+        echo "\nproducto: ".$nombreNet."\n";
+        echo "\nprecio: ".digitsOnly($precioNet)."\n";
+        echo "\n-------------FIN--------------\n";
 
         // datos de una notebook convertida en arreglo asociativo
         $netArrAssoc = dataFormatted($nombreNet,$precioNet,$URL);

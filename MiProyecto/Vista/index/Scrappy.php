@@ -157,10 +157,7 @@ include_once('../estructura/header.php');
                         url: '../Action/sugerencias.php', // Ruta al script en Action
                         // tipo de solicitud HTTP. GET implicará que los datos se enviarán en la URL
                         method: 'GET',
-                        // tipo de datos que se espera recibir de la respuesta. Obj o Array de formato JSON
-                        // dataType: 'json',
-                        // datos que se envían al servidor. Se trata de un objeto que contiene la cadena ingresada por el usuario.  
-                        // data: { search: inputValue },
+                        
                         success: function(data) {
                             
                             var notebooks = JSON.parse(data);
